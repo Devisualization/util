@@ -2,6 +2,9 @@
 import gl = derelict.opengl3.gl;
 import glarb = derelict.opengl3.arb;
 
+// no need to polute name space any further when its args don't change
+public import derelict.opengl3.gl : glIsQuery, glIsBuffer;
+
 enum QueryTargets {
     SamplesPassed = gl.GL_SAMPLES_PASSED,
     AnySamplesPassed = gl.GL_ANY_SAMPLES_PASSED,
@@ -96,10 +99,6 @@ void glDeleteQueries(uint id) {
     gl.glDeleteQueries(1, &id);
 }
 
-gl.GLboolean glIsQuery(uint id) {
-    return gl.glIsQuery(id);
-}
-
 void glBeginQuery(QueryTargets target, uint id) {
     gl.glBeginQuery(cast(gl.GLenum)target, id);
 }
@@ -148,10 +147,6 @@ uint[] glGenBuffers(int n) {
     uint[] ret;
     gl.glGenBuffers(n, ret.ptr);
     return ret;
-}
-
-bool glIsBuffer(uint buffer) {
-    return cast(bool)gl.glIsBuffer(buffer);
 }
 
 void glBufferData(BindBufferTargets target, void[] data, BufferUsages usage) {
