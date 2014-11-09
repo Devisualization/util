@@ -2,7 +2,8 @@
 import gl = derelict.opengl3.gl;
 import gldepcnst = derelict.opengl3.deprecatedConstants;
 
-public import derelict.opengl3.gl : glFlush, glFinish; // no need to polute name space any further when it has no args
+// no need to polute name space any further when its args don't change
+public import derelict.opengl3.gl : glFlush, glFinish, glScissor, glLineWidth, glPointSize;
 
 enum InternalFormat {
     DepthComponent = gl.GL_DEPTH_COMPONENT,
@@ -119,6 +120,58 @@ enum PixelDataType {
     UINT2101010REV = gl.GL_UNSIGNED_INT_2_10_10_10_REV
 }
 
+enum Face {
+    Front = gl.GL_FRONT,
+    Back = gl.GL_BACK,
+    FrontAndBack = gl.GL_FRONT_AND_BACK
+}
+
+enum HintMode {
+    Fastest = gl.GL_FASTEST,
+    Nicest = gl.GL_NICEST,
+    DontCare = gl.GL_DONT_CARE
+}
+
+enum ClockOrientation {
+    ClockWise = gl.GL_CW,
+    CounterClockWise = gl.GL_CCW
+}
+
+enum PolygonMode {
+    Point = gl.GL_POINT,
+    Line = gl.GL_LINE,
+    FILL = gl.GL_FILL
+}
+
+enum TextureParameterTarget {
+    Texture1D = gl.GL_TEXTURE_1D,
+    Texture2D = gl.GL_TEXTURE_2D,
+    Texture3D = gl.GL_TEXTURE_3D,
+    Texture1DArray = gl.GL_TEXTURE_1D_ARRAY,
+    Texture2DArray = gl.GL_TEXTURE_2D_ARRAY,
+    TextureRectangle = gl.GL_TEXTURE_RECTANGLE,
+    TextureCubeMap = gl.GL_TEXTURE_CUBE_MAP
+}
+
+enum TextureParameterName {
+    BaseLevel = gl.GL_TEXTURE_BASE_LEVEL,
+    CompareFunc = gl.GL_TEXTURE_COMPARE_FUNC,
+    CompareMode = gl.GL_TEXTURE_COMPARE_MODE,
+    LODBias = gl.GL_TEXTURE_LOD_BIAS,
+    MinFilter = gl.GL_TEXTURE_MIN_FILTER,
+    MagFilter = gl.GL_TEXTURE_MAG_FILTER,
+    MinLOD = gl.GL_TEXTURE_MIN_LOD,
+    MaxLOD = gl.GL_TEXTURE_MAX_LOD,
+    MaxLevel = gl.GL_TEXTURE_MAX_LEVEL,
+    SwizzleR = gl.GL_TEXTURE_SWIZZLE_R,
+    SwizzleG = gl.GL_TEXTURE_SWIZZLE_G,
+    SwizzleB = gl.GL_TEXTURE_SWIZZLE_B,
+    SwizzleA = gl.GL_TEXTURE_SWIZZLE_A,
+    WrapS = gl.GL_TEXTURE_WRAP_S,
+    WrapT = gl.GL_TEXTURE_WRAP_T,
+    WrapR = gl.GL_TEXTURE_WRAP_R
+}
+
 void glClear(bool buffer = false, bool depth = false, bool stencil = false) {
     gl.glClear((buffer ? gl.GL_COLOR_BUFFER_BIT : 0) | (depth ? gl.GL_DEPTH_BUFFER_BIT : 0) | (stencil ? gl.GL_STENCIL_BUFFER_BIT : 0));
 }
@@ -127,17 +180,60 @@ void glTexImage2D(BindTextureTarget target, int level, InternalFormat internalFo
     gl.glTexImage2D(cast(gl.GLenum)target, level, cast(gl.GLenum)internalFormat, width, height, 0, cast(gl.GLenum)format, cast(gl.GLenum)type, data.ptr);
 }
 
-/*bindFunc(cast(void**)&glCullFace, "glCullFace");
-bindFunc(cast(void**)&glFrontFace, "glFrontFace");
-bindFunc(cast(void**)&glHint, "glHint");
-bindFunc(cast(void**)&glLineWidth, "glLineWidth");
-bindFunc(cast(void**)&glPointSize, "glPointSize");
-bindFunc(cast(void**)&glPolygonMode, "glPolygonMode");
-bindFunc(cast(void**)&glScissor, "glScissor");
-bindFunc(cast(void**)&glTexParameterf, "glTexParameterf");
-bindFunc(cast(void**)&glTexParameterfv, "glTexParameterfv");
-bindFunc(cast(void**)&glTexParameteri, "glTexParameteri");
-bindFunc(cast(void**)&glTexParameteriv, "glTexParameteriv");
+void glCullFace(Face face = Face.Back) {
+    gl.glCullFace(cast(gl.GLenum)face);
+}
+
+void glFrontFace(ClockOrientation orientation = ClockOrientation.CounterClockWise) {
+    gl.glFrontFace(cast(gl.GLenum)orientation);
+}
+
+void glHint(HintMode mode) {
+    gl.glHint(gl.GL_GENERATE_MIPMAP_HINT, cast(gl.GLenum)mode);
+}
+
+void glPolygonMode(Face face, PolygonMode mode) {
+    gl.glPolygonMode(cast(gl.GLenum)face, cast(gl.GLenum)mode);
+}
+
+void glTexParameter(TextureParameterTarget target,
+                     TextureParameterName pname,
+                     float param) {
+    gl.glTexParameterf(target, pname, param);
+}
+
+void glTexParameter(TextureParameterTarget target,
+                    TextureParameterName pname,
+                    int param) {
+    gl.glTexParameteri(target, pname, param);
+}
+
+void glTexParameter(TextureParameterTarget target,
+                    TextureParameterName pname,
+                    float[] param) {
+    gl.glTexParameterfv(target, pname, param.ptr);
+}
+
+void glTexParameter(TextureParameterTarget target,
+                    TextureParameterName pname,
+                    int[] param) {
+    gl.glTexParameteriv(target, pname, param.ptr);
+}
+
+void glTexParameterI(TextureParameterTarget target,
+                    TextureParameterName pname,
+                    int[] param) {
+    gl.glTexParameterIiv(target, pname, param.ptr);
+}
+
+void glTexParameterI(TextureParameterTarget target,
+                    TextureParameterName pname,
+                    uint[] param) {
+    gl.glTexParameterIuiv(target, pname, param.ptr);
+}
+
+
+/*
 bindFunc(cast(void**)&glTexImage1D, "glTexImage1D");
 bindFunc(cast(void**)&glTexImage2D, "glTexImage2D");
 bindFunc(cast(void**)&glDrawBuffer, "glDrawBuffer");
