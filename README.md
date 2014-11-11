@@ -1,7 +1,7 @@
 Utility code used within Devisualization projects
 ====
 **TODO:**
-- Wrapper functions only go up to 1.5
+- Wrapper functions only go up to 1.5 (without legacy functions)
 	Based upon [DOOGLE's wrapper code](https://raw.githubusercontent.com/rikkimax/DOOGLE/master/source/OpenGL/doogle/overloads/wrappers.d)
 - Structify, not started but DOOGLE does have a start on it
 
