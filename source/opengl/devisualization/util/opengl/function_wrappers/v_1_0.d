@@ -3,7 +3,7 @@ import gl = derelict.opengl3.gl;
 import gldepcnst = derelict.opengl3.deprecatedConstants;
 
 // no need to polute name space any further when its args don't change
-public import derelict.opengl3.gl : glFlush, glFinish, glScissor, glLineWidth, glPointSize;
+public import derelict.opengl3.gl : glFlush, glFinish, glScissor, glLineWidth, glPointSize, glClearColor, glClearStencil, glStencilMask, glDepthMask;
 
 enum InternalFormat {
     DepthComponent = gl.GL_DEPTH_COMPONENT,
@@ -172,6 +172,40 @@ enum TextureParameterName {
     WrapR = gl.GL_TEXTURE_WRAP_R
 }
 
+enum TextureImage1D {
+    Texture1D = gl.GL_TEXTURE_1D,
+    ProxyTexture1D = gl.GL_PROXY_TEXTURE_1D
+}
+
+enum TextureImage2D {
+    Texture2D = gl.GL_TEXTURE_2D,
+    ProxyTexture2D = gl.GL_PROXY_TEXTURE_2D,
+    Texture1DArray = gl.GL_TEXTURE_1D_ARRAY,
+    ProxyTexture1DArray = gl.GL_PROXY_TEXTURE_1D_ARRAY,
+    TextureRectangle = gl.GL_TEXTURE_RECTANGLE,
+    ProxyTextureRectangle = gl.GL_PROXY_TEXTURE_RECTANGLE,
+    TextureCubeMapPositiveX = gl.GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+    TextureCubeMapNegativeX = gl.GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+    TextureCubeMapPositiveY = gl.GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+    TextureCubeMapNegativeY = gl.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+    TextureCubeMapPositiveZ = gl.GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
+    TextureCubeMapNegativeZ = gl.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
+    ProxyTextureCubeMap = gl.GL_PROXY_TEXTURE_CUBE_MAP
+}
+
+enum DrawBufferType {
+    None = gldepcnst.GL_NONE,
+    FrontLeft = gl.GL_FRONT_LEFT,
+    FrontRight = gl.GL_FRONT_RIGHT,
+    BackLeft = gl.GL_BACK_LEFT,
+    BackRight = gl.GL_BACK_RIGHT,
+    Front = gl.GL_FRONT,
+    Back = gl.GL_BACK,
+    Left = gl.GL_LEFT,
+    Right = gl.GL_RIGHT,
+    FrontAndBack = gl.GL_FRONT_AND_BACK
+}
+
 void glClear(bool buffer = false, bool depth = false, bool stencil = false) {
     gl.glClear((buffer ? gl.GL_COLOR_BUFFER_BIT : 0) | (depth ? gl.GL_DEPTH_BUFFER_BIT : 0) | (stencil ? gl.GL_STENCIL_BUFFER_BIT : 0));
 }
@@ -232,18 +266,33 @@ void glTexParameterI(TextureParameterTarget target,
     gl.glTexParameterIuiv(target, pname, param.ptr);
 }
 
+void glTexImage(TextureImage1D target, int level, InternalFormat internalFormat, int width, int border, PixelFormat format, PixelDataType type, void[] data) {
+    gl.glTexImage1D(target, level, internalFormat, width, border, format, type, data.ptr);
+}
 
-/*
-bindFunc(cast(void**)&glTexImage1D, "glTexImage1D");
-bindFunc(cast(void**)&glTexImage2D, "glTexImage2D");
-bindFunc(cast(void**)&glDrawBuffer, "glDrawBuffer");
-bindFunc(cast(void**)&glClear, "glClear");
-bindFunc(cast(void**)&glClearColor, "glClearColor");
-bindFunc(cast(void**)&glClearStencil, "glClearStencil");
-bindFunc(cast(void**)&glClearDepth, "glClearDepth");
-bindFunc(cast(void**)&glStencilMask, "glStencilMask");
-bindFunc(cast(void**)&glColorMask, "glColorMask");
- bindFunc(cast(void**)&glDepthMask, "glDepthMask");*/
+void glTexImage(TextureImage2D target, int level, InternalFormat internalFormat, int width, int height, int border, PixelFormat format, PixelDataType type, void[] data) {
+    gl.glTexImage2D(target, level, internalFormat, width, height, border, format, type, data.ptr);
+}
+
+void glDrawBuffer(DrawBufferType type) {
+    gl.glDrawBuffer(type);
+}
+
+void glClearDepth(int value) {
+    gl.glClearDepth(value);
+}
+
+void glClearDepth(float value) {
+    gl.glClearDepthf(value);
+}
+
+void glColorMask(bool red, bool green, bool blue, bool alpha) {
+    gl.glColorMask(red, green, blue, alpha);
+}
+
+void glColorMask(uint buf, bool red, bool green, bool blue, bool alpha) {
+    gl.glColorMaski(buf, red, green, blue, alpha);
+}
 
 void glEnable(EnableFunc func) {
     gl.glEnable(cast(gl.GLenum)func);
