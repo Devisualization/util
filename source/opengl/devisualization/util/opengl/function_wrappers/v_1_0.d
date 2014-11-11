@@ -206,6 +206,25 @@ enum DrawBufferType {
     FrontAndBack = gl.GL_FRONT_AND_BACK
 }
 
+enum LogicOperators {
+    Clear = gl.GL_CLEAR,
+    Set = gl.GL_SET,
+    Copy = gl.GL_COPY,
+    CopyInverted = gl.GL_COPY_INVERTED,
+    Noop = gl.GL_NOOP,
+    Invert = gl.GL_INVERT,
+    And = gl.GL_AND,
+    Nand = gl.GL_NAND,
+    Or = gl.GL_OR,
+    Nor = gl.GL_NOR,
+    Xor = gl.GL_XOR,
+    Equiv = gl.GL_EQUIV,
+    AndReverse = gl.GL_AND_REVERSE,
+    AndInverted = gl.GL_AND_INVERTED,
+    OrReverse = gl.GL_OR_REVERSE,
+    OrInverted = gl.GL_OR_INVERTED
+}
+
 void glClear(bool buffer = false, bool depth = false, bool stencil = false) {
     gl.glClear((buffer ? gl.GL_COLOR_BUFFER_BIT : 0) | (depth ? gl.GL_DEPTH_BUFFER_BIT : 0) | (stencil ? gl.GL_STENCIL_BUFFER_BIT : 0));
 }
@@ -310,7 +329,11 @@ void glBlendFunci(uint buf, BlendFactors sfactor, BlendFactors dfactor) {
     gl.glBlendFunci(buf, cast(gl.GLenum)sfactor, cast(gl.GLenum)dfactor);
 }
 
-/*bindFunc(cast(void**)&glLogicOp, "glLogicOp");
+void glLogicOp(LogicOperators op = LogicOperators.Copy) {
+    gl.glLogicOp(op);
+}
+
+/*
 bindFunc(cast(void**)&glStencilFunc, "glStencilFunc");
 bindFunc(cast(void**)&glStencilOp, "glStencilOp");
 bindFunc(cast(void**)&glDepthFunc, "glDepthFunc");
