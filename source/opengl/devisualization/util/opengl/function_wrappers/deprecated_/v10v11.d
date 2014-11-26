@@ -45,117 +45,125 @@ void glBegin(BeginPrimitives mode) {
     gl.glBegin(mode);
 }
 
-void glVertex(T...)(T values_) {
-    import std.traits : isArray;
-    alias V = typeof(values[0]);
+void glVertex(short a, short b)
+    { gl.glVertex2s(a, b); }
+void glVertex(int a, int b)
+    { gl.glVertex2i(a, b); }
+void glVertex(float a, float b)
+    { gl.glVertex2f(a, b); }
+void glVertex(double a, double b)
+    { gl.glVertex2d(a, b); }
 
-    static if (isArray!V) {
-        alias U = typeof(values[0][0]);
-        alias values = values_[0];
+void glVertex(short a, short b, short c)
+    { gl.glVertex3s(a, b, c); }
+void glVertex(int a, int b, int c)
+    { gl.glVertex3i(a, b, c); }
+void glVertex(float a, float b, float c)
+    { gl.glVertex3f(a, b, c); }
+void glVertex(double a, double b, double c)
+    { gl.glVertex3d(a, b, c); }
 
-        static if (is(U == short)) {
-            static if (values.length == 2) {
-                gl.glVertex2sv(values.ptr);
-            } else static if (values.length == 3) {
-                gl.glVertex3sv(values.ptr);
-            } else static if (values.length == 4) {
-                gl.glVertex4sv(values.ptr);
-            } else {
-                static assert("Unknown count of values");
-            }
-        } else static if (is(U == int)) {
-            static if (values.length == 2) {
-                gl.glVertex2iv(values.ptr);
-            } else static if (values.length == 3) {
-                gl.glVertex3iv(values.ptr);
-            } else static if (values.length == 4) {
-                gl.glVertex4iv(values.ptr);
-            } else {
-                static assert("Unknown count of values");
-            }
-        } else static if (is(U == float)) {
-            static if (values.length == 2) {
-                gl.glVertex2fv(values.ptr);
-            } else static if (values.length == 3) {
-                gl.glVertex3fv(values.ptr);
-            } else static if (values.length == 4) {
-                gl.glVertex4fv(values.ptr);
-            } else {
-                static assert("Unknown count of values");
-            }
-        } else static if (is(U == double)) {
-            static if (values.length == 2) {
-                gl.glVertex2dv(values.ptr);
-            } else static if (values.length == 3) {
-                gl.glVertex3dv(values.ptr);
-            } else static if (values.length == 4) {
-                gl.glVertex4dv(values.ptr);
-            } else {
-                static assert("Unknown count of values");
-            }
-        } else {
-            static assert(0, "Unknown vertex value type");
-        }
-    } else {
-        alias U = V;
-        alias values = values_;
+void glVertex(short a, short b, short c, short d)
+    { gl.glVertex4s(a, b, c, d); }
+void glVertex(int a, int b, int c, int d)
+    { gl.glVertex4i(a, b, c, d); }
+void glVertex(float a, float b, float c, float d)
+    { gl.glVertex4f(a, b, c, d); }
+void glVertex(double a, double b, double c, double d)
+    { gl.glVertex4d(a, b, c, d); }
 
-        static if (is(U == short)) {
-            static if (values.length == 2) {
-                gl.glVertex2s(values[0], values[1]);
-            } else static if (values.length == 3) {
-                gl.glVertex3s(values[0], values[1], values[2]);
-            } else static if (values.length == 4) {
-                gl.glVertex4s(values[0], values[1], values[2], values[3]);
-            } else {
-                static assert("Unknown count of values");
-            }
-        } else static if (is(U == int)) {
-            static if (values.length == 2) {
-                gl.glVertex2i(values[0], values[1]);
-            } else static if (values.length == 3) {
-                gl.glVertex3i(values[0], values[1], values[2]);
-            } else static if (values.length == 4) {
-                gl.glVertex4i(values[0], values[1], values[2], values[3]);
-            } else {
-                static assert("Unknown count of values");
-            }
-        } else static if (is(U == float)) {
-            static if (values.length == 2) {
-                gl.glVertex2f(values[0], values[1]);
-            } else static if (values.length == 3) {
-                gl.glVertex3f(values[0], values[1], values[2]);
-            } else static if (values.length == 4) {
-                gl.glVertex4f(values[0], values[1], values[2], values[3]);
-            } else {
-                static assert("Unknown count of values");
-            }
-        } else static if (is(U == double)) {
-            static if (values.length == 2) {
-                gl.glVertex2d(values[0], values[1]);
-            } else static if (values.length == 3) {
-                gl.glVertex3d(values[0], values[1], values[2]);
-            } else static if (values.length == 4) {
-                gl.glVertex4d(values[0], values[1], values[2], values[3]);
-            } else {
-                static assert("Unknown count of values");
-            }
-        } else {
-            static assert(0, "Unknown vertex value type");
-        }
-    }
-}
+void glNormal(byte a, byte b, byte c)
+    { gl.glNormal3b(a, b, c); }
+void glNormal(double a, double b, double c)
+    { gl.glNormal3d(a, b, c); }
+void glNormal(float a, float b, float c)
+    { gl.glNormal3f(a, b, c); }
+void glNormal(int a, int b, int c)
+    { gl.glNormal3i(a, b, c); }
+void glNormal(short a, short b, short c)
+    { gl.glNormal3s(a, b, c); }
 
-/*alias da_glNormal3b = void function( GLbyte,GLbyte,GLbyte );
-alias da_glNormal3d = void function( GLdouble,GLdouble,GLdouble );
-alias da_glNormal3f = void function( GLfloat,GLfloat,GLfloat );
-alias da_glNormal3i = void function( GLint,GLint,GLint );
-alias da_glNormal3s = void function( GLshort,GLshort,GLshort );
-alias da_glNormal3bv = void function( const( GLbyte )* );
-alias da_glNormal3dv = void function( const( GLdouble )* );
-alias da_glNormal3fv = void function( const( GLfloat )* );
-alias da_glNormal3iv = void function( const( GLint )* );
-alias da_glNormal3sv = void function( const( GLshort )* );*/
+void glNormal(byte[] value)
+    in { assert(value.length == 3); }
+    body { gl.glNormal3bv(cast(const)value.ptr); }
+void glNormal(double[] value)
+    in { assert(value.length == 3); }
+    body { gl.glNormal3dv(value.ptr); }
+void glNormal(float[] value)
+    in { assert(value.length == 3); }
+    body { gl.glNormal3fv(value.ptr); }
+void glNormal(int[] value)
+    in { assert(value.length == 3); }
+    body { gl.glNormal3iv(value.ptr); }
+void glNormal(short[] value)
+    in { assert(value.length == 3); }
+    body { gl.glNormal3sv(value.ptr); }
+
+void glVertex(short[] value)
+    in { assert(value.length == 2); }
+    body { gl.glVertex2sv(value.ptr); }
+void glVertex(int[] value)
+    in { assert(value.length == 2); }
+    body { gl.glVertex2iv(value.ptr); }
+void glVertex(float[] value)
+    in { assert(value.length == 2); }
+    body { gl.glVertex2fv(value.ptr); }
+void glVertex(double[] value)
+    in { assert(value.length == 2); }
+    body { gl.glVertex2dv(value.ptr); }
+
+void glVertex(short[] value)
+    in { assert(value.length == 3); }
+    body { gl.glVertex3sv(value.ptr); }
+void glVertex(int[] value)
+    in { assert(value.length == 3); }
+    body { gl.glVertex3iv(value.ptr); }
+void glVertex(float[] value)
+    in { assert(value.length == 3); }
+    body { gl.glVertex3fv(value.ptr); }
+void glVertex(double[] value)
+    in { assert(value.length == 3); }
+    body { gl.glVertex3dv(value.ptr); }
+
+void glVertex(short[] value)
+    in { assert(value.length == 4); }
+    body { gl.glVertex4sv(value.ptr); }
+void glVertex(int[] value)
+    in { assert(value.length == 4); }
+    body { gl.glVertex4iv(value.ptr); }
+void glVertex(float[] value)
+    in { assert(value.length == 4); }
+    body { gl.glVertex4fv(value.ptr); }
+void glVertex(double[] value)
+    in { assert(value.length == 4); }
+    body { gl.glVertex4dv(value.ptr); }
+
+void glNormal(byte a, byte b, byte c)
+{ gl.glNormal3b(a, b, c); }
+void glNormal(double a, double b, double c)
+{ gl.glNormal3d(a, b, c); }
+void glNormal(float a, float b, float c)
+{ gl.glNormal3f(a, b, c); }
+void glNormal(int a, int b, int c)
+{ gl.glNormal3i(a, b, c); }
+void glNormal(short a, short b, short c)
+{ gl.glNormal3s(a, b, c); }
+
+void glNormal(byte[] value)
+in { assert(value.length == 3); }
+body { gl.glNormal3bv(cast(const)value.ptr); }
+void glNormal(double[] value)
+in { assert(value.length == 3); }
+body { gl.glNormal3dv(value.ptr); }
+void glNormal(float[] value)
+in { assert(value.length == 3); }
+body { gl.glNormal3fv(value.ptr); }
+void glNormal(int[] value)
+in { assert(value.length == 3); }
+body { gl.glNormal3iv(value.ptr); }
+void glNormal(short[] value)
+in { assert(value.length == 3); }
+body { gl.glNormal3sv(value.ptr); }
 
 /*alias da_glIndexd = void function( GLdouble );
 alias da_glIndexf = void function( GLfloat );
