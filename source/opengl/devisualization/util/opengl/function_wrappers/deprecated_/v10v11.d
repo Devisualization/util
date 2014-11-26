@@ -72,6 +72,54 @@ void glVertex(float a, float b, float c, float d)
 void glVertex(double a, double b, double c, double d)
     { gl.glVertex4d(a, b, c, d); }
 
+void glVertex(short[] value)
+in {
+    assert(value.length >= 2 && value.length <= 4, "Invalid array length");
+} body {
+    if (value.length == 2)
+        gl.glVertex2sv(value.ptr);
+    else if (value.length == 3)
+        gl.glVertex3sv(value.ptr);
+    else if (value.length == 4)
+        gl.glVertex4sv(value.ptr);
+}
+
+void glVertex(int[] value)
+in {
+    assert(value.length >= 2 && value.length <= 4, "Invalid array length");
+} body {
+    if (value.length == 2)
+        gl.glVertex2iv(value.ptr);
+    else if (value.length == 3)
+        gl.glVertex3iv(value.ptr);
+    else if (value.length == 4)
+        gl.glVertex4iv(value.ptr);
+}
+
+void glVertex(float[] value)
+in {
+    assert(value.length >= 2 && value.length <= 4, "Invalid array length");
+} body {
+    if (value.length == 2)
+        gl.glVertex2fv(value.ptr);
+    else if (value.length == 3)
+        gl.glVertex3fv(value.ptr);
+    else if (value.length == 4)
+        gl.glVertex4fv(value.ptr);
+}
+
+void glVertex(double[] value)
+in {
+    assert(value.length >= 2 && value.length <= 4, "Invalid array length");
+} body {
+    if (value.length == 2)
+        gl.glVertex2dv(value.ptr);
+    else if (value.length == 3)
+        gl.glVertex3dv(value.ptr);
+    else if (value.length == 4)
+        gl.glVertex4dv(value.ptr);
+}
+
 void glNormal(byte a, byte b, byte c)
     { gl.glNormal3b(a, b, c); }
 void glNormal(double a, double b, double c)
@@ -98,72 +146,6 @@ void glNormal(int[] value)
 void glNormal(short[] value)
     in { assert(value.length == 3); }
     body { gl.glNormal3sv(value.ptr); }
-
-void glVertex(short[] value)
-    in { assert(value.length == 2); }
-    body { gl.glVertex2sv(value.ptr); }
-void glVertex(int[] value)
-    in { assert(value.length == 2); }
-    body { gl.glVertex2iv(value.ptr); }
-void glVertex(float[] value)
-    in { assert(value.length == 2); }
-    body { gl.glVertex2fv(value.ptr); }
-void glVertex(double[] value)
-    in { assert(value.length == 2); }
-    body { gl.glVertex2dv(value.ptr); }
-
-void glVertex(short[] value)
-    in { assert(value.length == 3); }
-    body { gl.glVertex3sv(value.ptr); }
-void glVertex(int[] value)
-    in { assert(value.length == 3); }
-    body { gl.glVertex3iv(value.ptr); }
-void glVertex(float[] value)
-    in { assert(value.length == 3); }
-    body { gl.glVertex3fv(value.ptr); }
-void glVertex(double[] value)
-    in { assert(value.length == 3); }
-    body { gl.glVertex3dv(value.ptr); }
-
-void glVertex(short[] value)
-    in { assert(value.length == 4); }
-    body { gl.glVertex4sv(value.ptr); }
-void glVertex(int[] value)
-    in { assert(value.length == 4); }
-    body { gl.glVertex4iv(value.ptr); }
-void glVertex(float[] value)
-    in { assert(value.length == 4); }
-    body { gl.glVertex4fv(value.ptr); }
-void glVertex(double[] value)
-    in { assert(value.length == 4); }
-    body { gl.glVertex4dv(value.ptr); }
-
-void glNormal(byte a, byte b, byte c)
-{ gl.glNormal3b(a, b, c); }
-void glNormal(double a, double b, double c)
-{ gl.glNormal3d(a, b, c); }
-void glNormal(float a, float b, float c)
-{ gl.glNormal3f(a, b, c); }
-void glNormal(int a, int b, int c)
-{ gl.glNormal3i(a, b, c); }
-void glNormal(short a, short b, short c)
-{ gl.glNormal3s(a, b, c); }
-
-void glNormal(byte[] value)
-in { assert(value.length == 3); }
-body { gl.glNormal3bv(cast(const)value.ptr); }
-void glNormal(double[] value)
-in { assert(value.length == 3); }
-body { gl.glNormal3dv(value.ptr); }
-void glNormal(float[] value)
-in { assert(value.length == 3); }
-body { gl.glNormal3fv(value.ptr); }
-void glNormal(int[] value)
-in { assert(value.length == 3); }
-body { gl.glNormal3iv(value.ptr); }
-void glNormal(short[] value)
-in { assert(value.length == 3); }
-body { gl.glNormal3sv(value.ptr); }
 
 /*alias da_glIndexd = void function( GLdouble );
 alias da_glIndexf = void function( GLfloat );
