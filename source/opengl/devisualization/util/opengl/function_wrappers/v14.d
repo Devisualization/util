@@ -1,4 +1,4 @@
-﻿﻿/*
+﻿/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2014 Devisualization (Richard Andrew Cattermole)
@@ -21,10 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module devisualization.util.opengl.function_wrappers.v_1_4;
+module devisualization.util.opengl.function_wrappers.v14;
 import gl = derelict.opengl3.gl;
-public import devisualization.util.opengl.function_wrappers.v_1_0 : BlendFactors;
-public import devisualization.util.opengl.function_wrappers.v_1_1 : Primitives;
+public import devisualization.util.opengl.function_wrappers.v10 : BlendFactors;
+public import devisualization.util.opengl.function_wrappers.v11 : Primitives;
 
 enum PointParamaterNames {
     FadeThresholdSize = gl.GL_POINT_FADE_THRESHOLD_SIZE,

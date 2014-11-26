@@ -1,4 +1,4 @@
-﻿module devisualization.util.opengl.function_wrappers.deprecated_.v_1_2;
+﻿module devisualization.util.opengl.function_wrappers.deprecated_.v12;
 
 /*
     alias da_glColorTable = void function( GLenum, GLenum, GLsizei, GLenum, GLenum, const( void )* );

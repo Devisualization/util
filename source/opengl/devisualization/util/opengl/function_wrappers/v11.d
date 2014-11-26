@@ -1,4 +1,4 @@
-﻿﻿/*
+﻿/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2014 Devisualization (Richard Andrew Cattermole)
@@ -21,9 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module devisualization.util.opengl.function_wrappers.v_1_1;
+module devisualization.util.opengl.function_wrappers.v11;
 import gl = derelict.opengl3.gl;
-public import devisualization.util.opengl.function_wrappers.v_1_0 : BindTextureTarget, InternalFormat;
+public import devisualization.util.opengl.function_wrappers.v10 : BindTextureTarget, InternalFormat;
 
 // no need to polute name space any further when its args don't change
 public import derelict.opengl3.gl : glPolygonOffset, glIsTexture;

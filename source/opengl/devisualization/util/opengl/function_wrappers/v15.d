@@ -1,4 +1,4 @@
-﻿﻿/*
+﻿/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2014 Devisualization (Richard Andrew Cattermole)
@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module devisualization.util.opengl.function_wrappers.v_1_5;
+module devisualization.util.opengl.function_wrappers.v15;
 import gl = derelict.opengl3.gl;
 import glarb = derelict.opengl3.arb;
 

@@ -1,40 +1,152 @@
-﻿module devisualization.util.opengl.function_wrappers.deprecated_.v_1_0_v_1_1;
+﻿module devisualization.util.opengl.function_wrappers.deprecated_.v10v11;
+import gl = derelict.opengl3.gl;
+public import derelict.opengl3.gl : glEnd, glListBase, glCallList, glEndList, glGenLists, glDeleteLists, glIsList;
 
-/*alias da_glIsList = GLboolean function( GLuint );
-alias da_glDeleteLists = void function( GLuint,GLsizei );
-alias da_glGenLists = GLuint function( GLsizei );
-alias da_glNewList = void function( GLuint,GLenum );
-alias da_glEndList = void function();
-alias da_glCallList = void function( GLuint );
-alias da_glCallLists = void function( GLsizei,GLenum,const( void )* );
-alias da_glListBase = void function( GLuint );
-alias da_glBegin = void function( GLenum );
-alias da_glEnd = void function();
-alias da_glVertex2d = void function( GLdouble,GLdouble );
-alias da_glVertex2f = void function( GLfloat,GLfloat );
-alias da_glVertex2i = void function( GLint,GLint );
-alias da_glVertex2s = void function( GLshort,GLshort );
-alias da_glVertex3d = void function( GLdouble,GLdouble,GLdouble );
-alias da_glVertex3f = void function( GLfloat,GLfloat,GLfloat );
-alias da_glVertex3i = void function( GLint,GLint,GLint );
-alias da_glVertex3s = void function( GLshort,GLshort,GLshort );
-alias da_glVertex4d = void function( GLdouble,GLdouble,GLdouble,GLdouble );
-alias da_glVertex4f = void function( GLfloat,GLfloat,GLfloat,GLfloat );
-alias da_glVertex4i = void function( GLint,GLint,GLint,GLint );
-alias da_glVertex4s = void function( GLshort,GLshort,GLshort,GLshort );
-alias da_glVertex2dv = void function( const( GLdouble )* );
-alias da_glVertex2fv = void function( const( GLfloat )* );
-alias da_glVertex2iv = void function( const( GLint )* );
-alias da_glVertex2sv = void function( const( GLshort )* );
-alias da_glVertex3dv = void function( const( GLdouble )* );
-alias da_glVertex3fv = void function( const( GLfloat )* );
-alias da_glVertex3iv = void function( const( GLint )* );
-alias da_glVertex3sv = void function( const( GLshort )* );
-alias da_glVertex4dv = void function( const( GLdouble )* );
-alias da_glVertex4fv = void function( const( GLfloat )* );
-alias da_glVertex4iv = void function( const( GLint )* );
-alias da_glVertex4sv = void function( const( GLshort )* );
-alias da_glNormal3b = void function( GLbyte,GLbyte,GLbyte );
+enum ListMode {
+    Compile = gl.GL_COMPILE,
+    CompileAndExecute = gl.GL_COMPILE_AND_EXECUTE
+}
+
+enum CallListSizes {
+    UnsignedByte = gl.GL_UNSIGNED_BYTE,
+    Byte = gl.GL_BYTE,
+    UnsignedShort = gl.GL_UNSIGNED_SHORT,
+    Short = gl.GL_SHORT,
+    UnsignedInt = gl.GL_UNSIGNED_INT,
+    Int = gl.GL_INT,
+    Float = gl.GL_FLOAT,
+    Bytes2 = gl.GL_2_BYTES,
+    Bytes3 = gl.GL_3_BYTES,
+    Bytes4 = gl.GL_4_BYTES
+}
+
+enum BeginPrimitives {
+    Points = gl.GL_POINTS,
+    LineStrip = gl.GL_LINE_STRIP,
+    LineLoop = gl.GL_LINE_LOOP,
+    Lines = gl.GL_LINES,
+    TriangleStrip = gl.GL_TRIANGLE_STRIP,
+    TriangleFan = gl.GL_TRIANGLE_FAN,
+    Triangles = gl.GL_TRIANGLES,
+    Quads = gl.GL_QUADS,
+    QuadStrip = gl.GL_QUAD_STRIP,
+    Polygon = gl.GL_POLYGON
+}
+
+void glNewList(uint list, ListMode mode) {
+    gl.glNewList(list, mode);
+}
+
+void glCallLists(T)(CallListSizes type, T[] lists) {
+    gl.glCallLists(lists.length, type, lists.ptr);
+}
+
+void glBegin(BeginPrimitives mode) {
+    gl.glBegin(mode);
+}
+
+void glVertex(T...)(T values_) {
+    import std.traits : isArray;
+    alias V = typeof(values[0]);
+
+    static if (isArray!V) {
+        alias U = typeof(values[0][0]);
+        alias values = values_[0];
+
+        static if (is(U == short)) {
+            static if (values.length == 2) {
+                gl.glVertex2sv(values.ptr);
+            } else static if (values.length == 3) {
+                gl.glVertex3sv(values.ptr);
+            } else static if (values.length == 4) {
+                gl.glVertex4sv(values.ptr);
+            } else {
+                static assert("Unknown count of values");
+            }
+        } else static if (is(U == int)) {
+            static if (values.length == 2) {
+                gl.glVertex2iv(values.ptr);
+            } else static if (values.length == 3) {
+                gl.glVertex3iv(values.ptr);
+            } else static if (values.length == 4) {
+                gl.glVertex4iv(values.ptr);
+            } else {
+                static assert("Unknown count of values");
+            }
+        } else static if (is(U == float)) {
+            static if (values.length == 2) {
+                gl.glVertex2fv(values.ptr);
+            } else static if (values.length == 3) {
+                gl.glVertex3fv(values.ptr);
+            } else static if (values.length == 4) {
+                gl.glVertex4fv(values.ptr);
+            } else {
+                static assert("Unknown count of values");
+            }
+        } else static if (is(U == double)) {
+            static if (values.length == 2) {
+                gl.glVertex2dv(values.ptr);
+            } else static if (values.length == 3) {
+                gl.glVertex3dv(values.ptr);
+            } else static if (values.length == 4) {
+                gl.glVertex4dv(values.ptr);
+            } else {
+                static assert("Unknown count of values");
+            }
+        } else {
+            static assert(0, "Unknown vertex value type");
+        }
+    } else {
+        alias U = V;
+        alias values = values_;
+
+        static if (is(U == short)) {
+            static if (values.length == 2) {
+                gl.glVertex2s(values[0], values[1]);
+            } else static if (values.length == 3) {
+                gl.glVertex3s(values[0], values[1], values[2]);
+            } else static if (values.length == 4) {
+                gl.glVertex4s(values[0], values[1], values[2], values[3]);
+            } else {
+                static assert("Unknown count of values");
+            }
+        } else static if (is(U == int)) {
+            static if (values.length == 2) {
+                gl.glVertex2i(values[0], values[1]);
+            } else static if (values.length == 3) {
+                gl.glVertex3i(values[0], values[1], values[2]);
+            } else static if (values.length == 4) {
+                gl.glVertex4i(values[0], values[1], values[2], values[3]);
+            } else {
+                static assert("Unknown count of values");
+            }
+        } else static if (is(U == float)) {
+            static if (values.length == 2) {
+                gl.glVertex2f(values[0], values[1]);
+            } else static if (values.length == 3) {
+                gl.glVertex3f(values[0], values[1], values[2]);
+            } else static if (values.length == 4) {
+                gl.glVertex4f(values[0], values[1], values[2], values[3]);
+            } else {
+                static assert("Unknown count of values");
+            }
+        } else static if (is(U == double)) {
+            static if (values.length == 2) {
+                gl.glVertex2d(values[0], values[1]);
+            } else static if (values.length == 3) {
+                gl.glVertex3d(values[0], values[1], values[2]);
+            } else static if (values.length == 4) {
+                gl.glVertex4d(values[0], values[1], values[2], values[3]);
+            } else {
+                static assert("Unknown count of values");
+            }
+        } else {
+            static assert(0, "Unknown vertex value type");
+        }
+    }
+}
+
+/*alias da_glNormal3b = void function( GLbyte,GLbyte,GLbyte );
 alias da_glNormal3d = void function( GLdouble,GLdouble,GLdouble );
 alias da_glNormal3f = void function( GLfloat,GLfloat,GLfloat );
 alias da_glNormal3i = void function( GLint,GLint,GLint );
@@ -43,8 +155,9 @@ alias da_glNormal3bv = void function( const( GLbyte )* );
 alias da_glNormal3dv = void function( const( GLdouble )* );
 alias da_glNormal3fv = void function( const( GLfloat )* );
 alias da_glNormal3iv = void function( const( GLint )* );
-alias da_glNormal3sv = void function( const( GLshort )* );
-alias da_glIndexd = void function( GLdouble );
+alias da_glNormal3sv = void function( const( GLshort )* );*/
+
+/*alias da_glIndexd = void function( GLdouble );
 alias da_glIndexf = void function( GLfloat );
 alias da_glIndexi = void function( GLint );
 alias da_glIndexs = void function( GLshort );
@@ -53,8 +166,9 @@ alias da_glIndexdv = void function( const( GLdouble )* );
 alias da_glIndexfv = void function( const( GLfloat )* );
 alias da_glIndexiv = void function( const( GLint )* );
 alias da_glIndexsv = void function( const( GLshort )* );
-alias da_glIndexubv = void function( const( GLubyte )* );
-alias da_glColor3b = void function( GLbyte,GLbyte,GLbyte );
+alias da_glIndexubv = void function( const( GLubyte )* );*/
+
+/*alias da_glColor3b = void function( GLbyte,GLbyte,GLbyte );
 alias da_glColor3d = void function( GLdouble,GLdouble,GLdouble );
 alias da_glColor3f = void function( GLfloat,GLfloat,GLfloat );
 alias da_glColor3i = void function( GLint,GLint,GLint );
@@ -85,8 +199,9 @@ alias da_glColor4iv = void function( const( GLint )* );
 alias da_glColor4sv = void function( const( GLshort )* );
 alias da_glColor4ubv = void function( const( GLubyte )* );
 alias da_glColor4uiv = void function( const( GLuint )* );
-alias da_glColor4usv = void function( const( GLushort )* );
-alias da_glTexCoord1d = void function( GLdouble );
+alias da_glColor4usv = void function( const( GLushort )* );*/
+
+/*alias da_glTexCoord1d = void function( GLdouble );
 alias da_glTexCoord1f = void function( GLfloat );
 alias da_glTexCoord1i = void function( GLint );
 alias da_glTexCoord1s = void function( GLshort );
@@ -117,8 +232,9 @@ alias da_glTexCoord3sv = void function( const( GLshort )* );
 alias da_glTexCoord4dv = void function( const( GLdouble )* );
 alias da_glTexCoord4fv = void function( const( GLfloat )* );
 alias da_glTexCoord4iv = void function( const( GLint )* );
-alias da_glTexCoord4sv = void function( const( GLshort )* );
-alias da_glRasterPos2d = void function( GLdouble,GLdouble );
+alias da_glTexCoord4sv = void function( const( GLshort )* );*/
+
+/*alias da_glRasterPos2d = void function( GLdouble,GLdouble );
 alias da_glRasterPos2f = void function( GLfloat,GLfloat );
 alias da_glRasterPos2i = void function( GLint,GLint );
 alias da_glRasterPos2s = void function( GLshort,GLshort );
@@ -141,8 +257,9 @@ alias da_glRasterPos3sv = void function( const( GLshort )* );
 alias da_glRasterPos4dv = void function( const( GLdouble )* );
 alias da_glRasterPos4fv = void function( const( GLfloat )* );
 alias da_glRasterPos4iv = void function( const( GLint )* );
-alias da_glRasterPos4sv = void function( const( GLshort )* );
-alias da_glRectd = void function( GLdouble,GLdouble,GLdouble,GLdouble );
+alias da_glRasterPos4sv = void function( const( GLshort )* );*/
+
+/*alias da_glRectd = void function( GLdouble,GLdouble,GLdouble,GLdouble );
 alias da_glRectf = void function( GLfloat,GLfloat,GLfloat,GLfloat );
 alias da_glRecti = void function( GLint,GLint,GLint,GLint );
 alias da_glRects = void function( GLshort,GLshort,GLshort,GLshort );

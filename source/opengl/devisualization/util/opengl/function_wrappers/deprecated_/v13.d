@@ -1,4 +1,4 @@
-﻿module devisualization.util.opengl.function_wrappers.deprecated_.v_1_3;
+﻿module devisualization.util.opengl.function_wrappers.deprecated_.v13;
 
 /*
     alias da_glClientActiveTexture = void function( GLenum );

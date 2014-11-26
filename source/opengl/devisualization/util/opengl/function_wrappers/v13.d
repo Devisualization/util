@@ -1,4 +1,4 @@
-﻿﻿/*
+﻿/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2014 Devisualization (Richard Andrew Cattermole)
@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module devisualization.util.opengl.function_wrappers.v_1_3;
+module devisualization.util.opengl.function_wrappers.v13;
 import gl = derelict.opengl3.gl;
-public import devisualization.util.opengl.function_wrappers.v_1_0 : InternalFormat;
-public import devisualization.util.opengl.function_wrappers.v_1_1 : CompressedTextureTargets2D;
-public import devisualization.util.opengl.function_wrappers.v_1_2 : TextureTargets;
+public import devisualization.util.opengl.function_wrappers.v10 : InternalFormat;
+public import devisualization.util.opengl.function_wrappers.v11 : CompressedTextureTargets2D;
+public import devisualization.util.opengl.function_wrappers.v12 : TextureTargets;
 
 enum TextureTargets2D {
     Texture2D = gl.GL_TEXTURE_2D,

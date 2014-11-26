@@ -1,4 +1,4 @@
-﻿module devisualization.util.opengl.function_wrappers.deprecated_.v_1_4;
+﻿module devisualization.util.opengl.function_wrappers.deprecated_.v14;
 
 /*
     alias da_glFogCoordf = void function( GLfloat );

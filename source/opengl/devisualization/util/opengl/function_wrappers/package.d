@@ -2,9 +2,9 @@
 
 public import devisualization.util.opengl.function_wrappers.deprecated_;
 
-public import devisualization.util.opengl.function_wrappers.v_1_0;
-public import devisualization.util.opengl.function_wrappers.v_1_1;
-public import devisualization.util.opengl.function_wrappers.v_1_2;
-public import devisualization.util.opengl.function_wrappers.v_1_3;
-public import devisualization.util.opengl.function_wrappers.v_1_4;
-public import devisualization.util.opengl.function_wrappers.v_1_5;
+public import devisualization.util.opengl.function_wrappers.v10;
+public import devisualization.util.opengl.function_wrappers.v11;
+public import devisualization.util.opengl.function_wrappers.v12;
+public import devisualization.util.opengl.function_wrappers.v13;
+public import devisualization.util.opengl.function_wrappers.v14;
+public import devisualization.util.opengl.function_wrappers.v15;

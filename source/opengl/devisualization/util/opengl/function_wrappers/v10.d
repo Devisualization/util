@@ -1,4 +1,4 @@
-﻿﻿/*
+﻿/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2014 Devisualization (Richard Andrew Cattermole)
@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module devisualization.util.opengl.function_wrappers.v_1_0;
+module devisualization.util.opengl.function_wrappers.v10;
 import gl = derelict.opengl3.gl;
 import gldepcnst = derelict.opengl3.deprecatedConstants;
 
@@ -864,8 +864,6 @@ string glGetString(GetStringNames name) {
     cstr = cast(char*)gl.glGetString(name);
     return cast(string)(cstr ? cstr[0 .. strlen(cstr)] : cstr[0 .. 0]);
 }
-
-
 
 /*TODO: requires to allocate for return variable (img)
 bindFunc(cast(void**)&glGetTexImage, "glGetTexImage");*/

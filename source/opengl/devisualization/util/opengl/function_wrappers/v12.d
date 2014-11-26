@@ -1,4 +1,4 @@
-﻿﻿/*
+﻿/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2014 Devisualization (Richard Andrew Cattermole)
@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module devisualization.util.opengl.function_wrappers.v_1_2;
+module devisualization.util.opengl.function_wrappers.v12;
 import gl = derelict.opengl3.gl;
 import gldepcnst = derelict.opengl3.deprecatedConstants;
-public import devisualization.util.opengl.function_wrappers.v_1_0 : PixelFormat, BindTextureTarget, InternalFormat, PixelDataType;
-public import devisualization.util.opengl.function_wrappers.v_1_1 : Primitives;
+public import devisualization.util.opengl.function_wrappers.v10 : PixelFormat, BindTextureTarget, InternalFormat, PixelDataType;
+public import devisualization.util.opengl.function_wrappers.v11 : Primitives;
 
 enum BlendMode {
     FuncAdd = gldepcnst.GL_FUNC_ADD,
