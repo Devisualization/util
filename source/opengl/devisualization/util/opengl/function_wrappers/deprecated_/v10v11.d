@@ -147,49 +147,118 @@ void glNormal(short[] value)
     in { assert(value.length == 3); }
     body { gl.glNormal3sv(value.ptr); }
 
-/*alias da_glIndexd = void function( GLdouble );
-alias da_glIndexf = void function( GLfloat );
-alias da_glIndexi = void function( GLint );
-alias da_glIndexs = void function( GLshort );
-alias da_glIndexub = void function( GLubyte );
+void glIndex(double value) { gl.glIndexd(value); }
+void glIndex(float value) { gl.glIndexf(value); }
+void glIndex(int value) { gl.glIndexi(value); }
+void glIndex(short value) { gl.glIndexs(value); }
+void glIndex(ubyte value) { gl.glIndexub(value); }
+
+/*
 alias da_glIndexdv = void function( const( GLdouble )* );
 alias da_glIndexfv = void function( const( GLfloat )* );
 alias da_glIndexiv = void function( const( GLint )* );
 alias da_glIndexsv = void function( const( GLshort )* );
 alias da_glIndexubv = void function( const( GLubyte )* );*/
 
-/*alias da_glColor3b = void function( GLbyte,GLbyte,GLbyte );
-alias da_glColor3d = void function( GLdouble,GLdouble,GLdouble );
-alias da_glColor3f = void function( GLfloat,GLfloat,GLfloat );
-alias da_glColor3i = void function( GLint,GLint,GLint );
-alias da_glColor3s = void function( GLshort,GLshort,GLshort );
-alias da_glColor3ub = void function( GLubyte,GLubyte,GLubyte );
-alias da_glColor3ui = void function( GLuint,GLuint,GLuint );
-alias da_glColor3us = void function( GLushort,GLushort,GLushort );
-alias da_glColor4b = void function( GLbyte,GLbyte,GLbyte,GLbyte );
-alias da_glColor4d = void function( GLdouble,GLdouble,GLdouble,GLdouble );
-alias da_glColor4f = void function( GLfloat,GLfloat,GLfloat,GLfloat );
-alias da_glColor4i = void function( GLint,GLint,GLint,GLint );
-alias da_glColor4s = void function( GLshort,GLshort,GLshort,GLshort );
-alias da_glColor4ub = void function( GLubyte,GLubyte,GLubyte,GLubyte );
-alias da_glColor4ui = void function( GLuint,GLuint,GLuint,GLuint );
-alias da_glColor4us = void function( GLushort,GLushort,GLushort,GLushort );
-alias da_glColor3bv = void function( const( GLbyte )* );
-alias da_glColor3dv = void function( const( GLdouble )* );
-alias da_glColor3fv = void function( const( GLfloat )* );
-alias da_glColor3iv = void function( const( GLint )* );
-alias da_glColor3sv = void function( const( GLshort )* );
-alias da_glColor3ubv = void function( const( GLubyte )* );
-alias da_glColor3uiv = void function( const( GLuint )* );
-alias da_glColor3usv = void function( const( GLushort )* );
-alias da_glColor4bv = void function( const( GLbyte )* );
-alias da_glColor4dv = void function( const( GLdouble )* );
-alias da_glColor4fv = void function( const( GLfloat )* );
-alias da_glColor4iv = void function( const( GLint )* );
-alias da_glColor4sv = void function( const( GLshort )* );
-alias da_glColor4ubv = void function( const( GLubyte )* );
-alias da_glColor4uiv = void function( const( GLuint )* );
-alias da_glColor4usv = void function( const( GLushort )* );*/
+void glColor(byte a, byte b, byte c) { gl.glColor3b(a, b, c); }
+void glColor(double a, double b, double c) { gl.glColor3d(a, b, c); }
+void glColor(float a, float b, float c) { gl.glColor3f(a, b, c); }
+void glColor(int a, int b, int c) { gl.glColor3i(a, b, c); }
+void glColor(short a, short b, short c) { gl.glColor3s(a, b, c); }
+
+void glColor(ubyte a, ubyte b, ubyte c) { gl.glColor3ub(a, b, c); }
+void glColor(uint a, uint b, uint c) { gl.glColor3ui(a, b, c); }
+void glColor(ushort a, ushort b, ushort c) { gl.glColor3us(a, b, c); }
+
+void glColor(byte a, byte b, byte c, byte d) { gl.glColor4b(a, b, c, d); }
+void glColor(double a, double b, double c, double d) { gl.glColor4d(a, b, c, d); }
+void glColor(float a, float b, float c, float d) { gl.glColor4f(a, b, c, d); }
+void glColor(int a, int b, int c, int d) { gl.glColor4i(a, b, c, d); }
+void glColor(short a, short b, short c, short d) { gl.glColor4s(a, b, c, d); }
+
+void glColor(ubyte a, ubyte b, ubyte c, byte d) { gl.glColor4ub(a, b, c, d); }
+void glColor(uint a, uint b, uint c, uint d) { gl.glColor4ui(a, b, c, d); }
+void glColor(ushort a, ushort b, ushort c, ushort d) { gl.glColor4us(a, b, c, d); }
+
+void glColor(byte[] value)
+in {
+    assert(value.length >= 3 && value.length <= 4, "Invalid array length");
+} body {
+    if (value.length == 3)
+        gl.glColor3bv(value.ptr);
+    else if (value.length == 4)
+        gl.glColor4bv(value.ptr);
+}
+
+void glColor(double[] value)
+in {
+    assert(value.length >= 3 && value.length <= 4, "Invalid array length");
+} body {
+    if (value.length == 3)
+        gl.glColor3dv(value.ptr);
+    else if (value.length == 4)
+        gl.glColor4dv(value.ptr);
+}
+
+void glColor(float[] value)
+in {
+    assert(value.length >= 3 && value.length <= 4, "Invalid array length");
+} body {
+    if (value.length == 3)
+        gl.glColor3fv(value.ptr);
+    else if (value.length == 4)
+        gl.glColor4fv(value.ptr);
+}
+
+void glColor(int[] value)
+in {
+    assert(value.length >= 3 && value.length <= 4, "Invalid array length");
+} body {
+    if (value.length == 3)
+        gl.glColor3iv(value.ptr);
+    else if (value.length == 4)
+        gl.glColor4iv(value.ptr);
+}
+
+void glColor(short[] value)
+in {
+    assert(value.length >= 3 && value.length <= 4, "Invalid array length");
+} body {
+    if (value.length == 3)
+        gl.glColor3sv(value.ptr);
+    else if (value.length == 4)
+        gl.glColor4sv(value.ptr);
+}
+
+void glColor(ubyte[] value)
+in {
+    assert(value.length >= 3 && value.length <= 4, "Invalid array length");
+} body {
+    if (value.length == 3)
+        gl.glColor3ubv(value.ptr);
+    else if (value.length == 4)
+        gl.glColor4ubv(value.ptr);
+}
+
+void glColor(uint[] value)
+in {
+    assert(value.length >= 3 && value.length <= 4, "Invalid array length");
+} body {
+    if (value.length == 3)
+        gl.glColor3uiv(value.ptr);
+    else if (value.length == 4)
+        gl.glColor4uiv(value.ptr);
+}
+
+void glColor(ushort[] value)
+in {
+    assert(value.length >= 3 && value.length <= 4, "Invalid array length");
+} body {
+    if (value.length == 3)
+        gl.glColor3usv(value.ptr);
+    else if (value.length == 4)
+        gl.glColor4usv(value.ptr);
+}
 
 /*alias da_glTexCoord1d = void function( GLdouble );
 alias da_glTexCoord1f = void function( GLfloat );
