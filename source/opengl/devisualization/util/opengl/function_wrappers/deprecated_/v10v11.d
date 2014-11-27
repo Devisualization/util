@@ -487,11 +487,9 @@ void glColorMaterial(MaterialFace face, MaterialType type) { gl.glColorMaterial(
 void glFog(FogType name, float param) { gl.glFogf(name, param); }
 void glFog(FogType name, int param) { gl.glFogi(name, param); }
 
-/*
+/*NOT DOING
 alias da_glFogfv = void function( GLenum,const( GLfloat )* );
-alias da_glFogiv = void function( GLenum,const( GLint )* );*/
-
-/*
+alias da_glFogiv = void function( GLenum,const( GLint )* );
 alias da_glPolygonStipple = void function( const( GLubyte )* );
 alias da_glGetPolygonStipple = void function( GLubyte* );*/
 
