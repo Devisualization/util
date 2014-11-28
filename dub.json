@@ -16,7 +16,8 @@
 			"name": "opengl",
 			"sourcePaths": ["source/opengl"],
             "dependencies": {
-                "derelict-gl3": ">=1.0.10"
+                "derelict-gl3": ">=1.0.10",
+                "de_image:interfaces": ">=0.1.4"
             }
 		}
 	]

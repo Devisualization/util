@@ -58,11 +58,11 @@ enum CompressedTextureTargets {
     TextureCubeMapNegativeZ = gl.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
 }
 
-void glActiveTexture(uint texture = gl.GL_TEXTURE0)
+void glActiveTexture(uint texture = 0)
 in {
     assert(texture < gl.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS);
 } body {
-    gl.glActiveTexture(texture);
+    gl.glActiveTexture(gl.GL_TEXTURE0 + texture);
 }
 
 void glSampleCoverage(float value, bool invert)
