@@ -1,9 +1,9 @@
 ﻿module source.opengl.devisualization.util.opengl.texture;
 import gl = derelict.opengl3.gl3;
 import devisualization.util.opengl.function_wrappers;
-//public import doogle.gl.buffers;
 public import devisualization.util.opengl.function_wrappers : InternalFormat, BindTextureTarget, PixelFormat;
 import devisualization.image;
+import devisualization.image.color;
 
 struct TextureImage {
     private {
@@ -31,6 +31,55 @@ struct TextureImage {
         glBindTexture(BindTextureTarget.Texture2D, id_);
         glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.MinFilter, gl.GL_NEAREST_MIPMAP_NEAREST);
         glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.MagFilter, gl.GL_NEAREST);
+    }
+
+    void wrapping(TextureWrapping s) {
+        int restoreId = glGetInteger(GetValueNames.TextureBinding2D);
+        
+        glBindTexture(BindTextureTarget.Texture2D, id_);
+        glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.WrapS, s);
+        
+        glBindTexture(BindTextureTarget.Texture2D, restoreId);
+    }
+    
+    void wrapping(TextureWrapping s, TextureWrapping t) {
+        int restoreId = glGetInteger(GetValueNames.TextureBinding2D);
+        
+        glBindTexture(BindTextureTarget.Texture2D, id_);
+        glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.WrapS, s);
+        glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.WrapT, t);
+        
+        glBindTexture(BindTextureTarget.Texture2D, restoreId);
+    }
+    
+    void wrapping(TextureWrapping s, TextureWrapping t, TextureWrapping r) {
+        int restoreId = glGetInteger(GetValueNames.TextureBinding2D);
+        
+        glBindTexture(BindTextureTarget.Texture2D, id_);
+        glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.WrapS, s);
+        glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.WrapT, t);
+        glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.WrapR, r);
+        
+        glBindTexture(BindTextureTarget.Texture2D, restoreId);
+    }
+
+    void filters(TextureFilter min, TextureFilter mag) {
+        int restoreId = glGetInteger(GetValueNames.TextureBinding2D);
+        
+        glBindTexture(BindTextureTarget.Texture2D, id_);
+        glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.MinFilter, min);
+        glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.MagFilter, mag);
+        
+        glBindTexture(BindTextureTarget.Texture2D, restoreId);
+    }
+
+    void borderColor(ref Color_RGBA color) {
+        int restoreId = glGetInteger(GetValueNames.TextureBinding2D);
+
+        glBindTexture(BindTextureTarget.Texture2D, id_);
+        glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.BorderColor, cast(int[])color.ubytes);
+
+        glBindTexture(BindTextureTarget.Texture2D, restoreId);
     }
     
     @property {

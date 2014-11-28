@@ -192,7 +192,10 @@ enum TextureParameterName {
     SwizzleA = gl.GL_TEXTURE_SWIZZLE_A,
     WrapS = gl.GL_TEXTURE_WRAP_S,
     WrapT = gl.GL_TEXTURE_WRAP_T,
-    WrapR = gl.GL_TEXTURE_WRAP_R
+    WrapR = gl.GL_TEXTURE_WRAP_R,
+
+    BorderColor = gl.GL_TEXTURE_BORDER_COLOR,
+    SwizzleRGBA = gl.GL_TEXTURE_SWIZZLE_RGBA
 }
 
 enum TextureImage1D {
@@ -690,6 +693,22 @@ enum Capabilities {
     VertexProgramPointSize = gl.GL_VERTEX_PROGRAM_POINT_SIZE,
     VertexProgramTwoSide = gl.GL_VERTEX_PROGRAM_TWO_SIDE,
     Error = 0
+}
+
+enum TextureWrapping {
+    ClampEdge = gl.GL_CLAMP_TO_EDGE,
+    ClampBorder = gl.GL_CLAMP_TO_BORDER,
+    Repeat = gl.GL_REPEAT,
+    MirroredRepeat = gl.GL_MIRRORED_REPEAT
+}
+
+enum TextureFilter {
+    Nearest = gl.GL_NEAREST,
+    Linear = gl.GL_LINEAR,
+    NearestMipmapNearest = gl.GL_NEAREST_MIPMAP_NEAREST,
+    LinearMipmapNearest = gl.GL_LINEAR_MIPMAP_NEAREST,
+    NearestMipmapLinear = gl.GL_NEAREST_MIPMAP_LINEAR,
+    LinearMipmapLinear = gl.GL_LINEAR_MIPMAP_LINEAR
 }
 
 void glClear(bool buffer = false, bool depth = false, bool stencil = false) {
