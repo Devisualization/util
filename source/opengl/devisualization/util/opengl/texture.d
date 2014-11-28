@@ -1,9 +1,9 @@
 ﻿module source.opengl.devisualization.util.opengl.texture;
-import glINCOMPLETE = derelict.opengl3.gl3;
 import devisualization.util.opengl.function_wrappers;
-public import devisualization.util.opengl.function_wrappers : InternalFormat, BindTextureTarget, PixelFormat;
 import devisualization.image;
 import devisualization.image.color;
+public import devisualization.util.opengl.function_wrappers : InternalFormat, BindTextureTarget, PixelFormat;
+import glINCOMPLETE = derelict.opengl3.gl3;
 
 struct TextureImage {
     private {
@@ -107,7 +107,7 @@ struct TextureImage {
         }
         
         void update() {
-            glTexImage2D(BindTextureTarget.Texture2D, 0, InternalFormat.RGBA, cast(uint)image_.width, cast(uint)image_.height, PixelFormat.RGBA, PixelDataType.UnsignedByte, cast(void[])ubyteRawColor(image.rgba.allPixels)[0]);
+            glTexImage2D(BindTextureTarget.Texture2D, 0, InternalFormat.RGBA, cast(uint)image_.width, cast(uint)image_.height, PixelFormat.RGBA, PixelDataType.UnsignedByte, *cast(void[]*)ubyteRawColor(image.rgba.allPixels)[0].ptr);
             glINCOMPLETE.glGenerateMipmap(BindTextureTarget.Texture2D);
         }
     }

@@ -162,8 +162,18 @@ void glBindBuffer(BindBufferTargets target, uint buffer) {
     gl.glBindBuffer(cast(gl.GLenum)target, buffer);
 }
 
+void glDeleteBuffer(uint id) {
+    gl.glDeleteBuffers(1, &id);
+}
+
 void glDeleteBuffers(uint[] buffers) {
     gl.glDeleteBuffers(cast(int)buffers.length, buffers.ptr);
+}
+
+uint glGenBuffer() {
+    uint ret;
+    gl.glGenBuffers(1, &ret);
+    return ret;
 }
 
 uint[] glGenBuffers(int n) {
