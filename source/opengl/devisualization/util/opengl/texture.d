@@ -99,16 +99,16 @@ struct TextureImage {
     
     private {
         void setup() {
-            glPixelStore(PixelStoreMode.UnpackingAlignment, 1);
             glGenTextures(id_);
             bind();
             update();
-            glPixelStore(PixelStoreMode.UnpackingAlignment, 4);
         }
         
         void update() {
+            glPixelStore(PixelStoreMode.UnpackingAlignment, 1);
             glTexImage2D(BindTextureTarget.Texture2D, 0, InternalFormat.RGBA, cast(uint)image_.width, cast(uint)image_.height, PixelFormat.RGBA, PixelDataType.UnsignedByte, *cast(void[]*)ubyteRawColor(image.rgba.allPixels)[0].ptr);
             glINCOMPLETE.glGenerateMipmap(BindTextureTarget.Texture2D);
+            glPixelStore(PixelStoreMode.UnpackingAlignment, 4);
         }
     }
 }
