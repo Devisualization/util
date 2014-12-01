@@ -10,8 +10,7 @@ struct TextureImage {
         Image image_;
         uint id_;
     }
-    
-    
+
     this(Image image) {
         image_ = image;
         setup();

@@ -250,10 +250,12 @@ void glGetShaderInfoLog(uint shader, string infoLog) {
     infoLog = infoLog[0 .. $-1];
 }
 
-void glGetShaderSource(uint shader, out string source) {
+string glGetShaderSource(uint shader) {
+    string ret;
     int* length;
-    gl.glGetShaderInfoLog(shader, int.max, length, cast(char*)source.ptr);
+    gl.glGetShaderInfoLog(shader, int.max, length, cast(char*)ret.ptr);
     source = source[0 .. $-1];
+    return ret;
 }
 
 int glGetUniformLocation(uint program, string name) {
@@ -280,8 +282,10 @@ void glGetVertexAttrib(uint index, VertexAttributeNames pname, int[] params) {
     gl.glGetVertexAttribiv(index, cast(gl.GLenum)pname, params.ptr);
 }
 
-void glGetVertexAttribPointer(uint index, out void*[] pointer) {
-    gl.glGetVertexAttribPointerv(index, gl.GL_VERTEX_ATTRIB_ARRAY_POINTER, pointer.ptr);
+void*[] glGetVertexAttribPointer(uint index) {
+    void*[] ret;
+    gl.glGetVertexAttribPointerv(index, gl.GL_VERTEX_ATTRIB_ARRAY_POINTER, ret.ptr);
+    return ret;
 }
 
 bool glIsProgram(uint program) {
