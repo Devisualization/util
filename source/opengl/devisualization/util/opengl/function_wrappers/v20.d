@@ -254,7 +254,7 @@ string glGetShaderSource(uint shader) {
     string ret;
     int* length;
     gl.glGetShaderInfoLog(shader, int.max, length, cast(char*)ret.ptr);
-    source = source[0 .. $-1];
+    ret = ret[0 .. $-1];
     return ret;
 }
 
