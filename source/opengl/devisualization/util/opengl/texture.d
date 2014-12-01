@@ -1,4 +1,4 @@
-﻿module source.opengl.devisualization.util.opengl.texture;
+﻿module devisualization.util.opengl.texture;
 import devisualization.util.opengl.function_wrappers;
 import devisualization.image;
 import devisualization.image.color;
