@@ -8,3 +8,4 @@ public import devisualization.util.opengl.function_wrappers.v12;
 public import devisualization.util.opengl.function_wrappers.v13;
 public import devisualization.util.opengl.function_wrappers.v14;
 public import devisualization.util.opengl.function_wrappers.v15;
+public import devisualization.util.opengl.function_wrappers.v20;
