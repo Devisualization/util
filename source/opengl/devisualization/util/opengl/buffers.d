@@ -115,6 +115,6 @@ struct Buffer(BufferUsages _usage, BindBufferTargets _type) {
     }
 
     void bind(BindBufferTargets type = _type) {
-        gl.glBindBuffer(type, id_);
+        glBindBuffer(type, id_);
     }
 }
