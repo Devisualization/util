@@ -6,9 +6,27 @@ public import gl3n.linalg : vec4, vec3, vec2, mat2, mat3, mat34, mat4;
 
 alias Buffer!(BufferUsages.StaticDraw, BindBufferTargets.ArrayBuffer) StandardBuffer;
 
+struct IBuffer {
+    private {
+        void delegate() bind1;
+        void delegate(BindBufferTargets type) bind2;
+    }
+
+    void bind() {
+        bind1();
+    }
+
+    void bind(BindBufferTargets type) {
+        bind2(type);
+    }
+}
+
 struct Buffer(BufferUsages _usage, BindBufferTargets _type) {
     private {
         uint id_;
+
+        IBuffer this_;
+        alias this_ this;
     }
     
     this(vec2[] data...) {
@@ -40,6 +58,9 @@ struct Buffer(BufferUsages _usage, BindBufferTargets _type) {
     this(ubyte[] data...) {this(cast(void[])data);}
     
     this(void[] data) {
+        this_.bind1 = () { bind(); };
+        this_.bind2 = &bind;
+
         id_ = glGenBuffer();
         glBindBuffer(_type, id_);
         glBufferData(_type, data, _usage);
@@ -92,10 +113,8 @@ struct Buffer(BufferUsages _usage, BindBufferTargets _type) {
     uint opCast(T:uint)() {
         return id_;
     }
-    
-    public {
-        void bind(BindBufferTargets type = _type) {
-            gl.glBindBuffer(type, id_);
-        }
+
+    void bind(BindBufferTargets type = _type) {
+        gl.glBindBuffer(type, id_);
     }
 }

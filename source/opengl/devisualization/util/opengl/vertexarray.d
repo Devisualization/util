@@ -5,7 +5,7 @@ import glINCOMPLETE = derelict.opengl3.gl3;
 import devisualization.util.opengl.function_wrappers;
 public import devisualization.util.opengl.function_wrappers : BindBufferTargets;
 
-shared class VertexArray {
+class VertexArray {
     private {
         uint id_;
     }
@@ -26,8 +26,8 @@ shared class VertexArray {
     void bind() {
         gl.glBindVertexArray(id_);
     }
-    
-    void bindAttribute(ShaderProgram program, string attribute, StandardBuffer buffer, AttribPointerType type, uint count) {
+
+    void bindAttribute(ShaderProgram program, string attribute, IBuffer buffer, AttribPointerType type, uint count) {
         buffer.bind();
         bindAttribute(program, attribute, type, count);
     }
