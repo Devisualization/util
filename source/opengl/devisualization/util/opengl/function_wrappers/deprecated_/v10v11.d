@@ -68,6 +68,13 @@ enum FogType {
     FogCoordSource = gl.GL_FOG_COORD_SRC
 }
 
+enum TextureCoordinate {
+    S = gl.GL_S,
+    T = gl.GL_T,
+    R = gl.GL_R,
+    Q = gl.GL_Q
+}
+
 void glNewList(uint list, ListMode mode) {
     gl.glNewList(list, mode);
 }
@@ -493,10 +500,11 @@ alias da_glFogiv = void function( GLenum,const( GLint )* );
 alias da_glPolygonStipple = void function( const( GLubyte )* );
 alias da_glGetPolygonStipple = void function( GLubyte* );*/
 
-/*
-alias da_glTexGend = void function( GLenum,GLenum,GLdouble );
-alias da_glTexGenf = void function( GLenum,GLenum,GLfloat );
-alias da_glTexGeni = void function( GLenum,GLenum,GLint );
+void glTexGen(TextureCoordinate coord, double v) { gl.glTexGend(coord, gl.GL_TEXTURE_GEN_MODE, v); }
+void glTexGen(TextureCoordinate coord, float v) { gl.glTexGenf(coord, gl.GL_TEXTURE_GEN_MODE, v); }
+void glTexGen(TextureCoordinate coord, int v) { gl.glTexGeni(coord, gl.GL_TEXTURE_GEN_MODE, v); }
+
+/* NOT DOING
 alias da_glTexGendv = void function( GLenum,GLenum,const( GLdouble )* );
 alias da_glTexGenfv = void function( GLenum,GLenum,const( GLfloat )* );
 alias da_glTexGeniv = void function( GLenum,GLenum,const( GLint )* );*/
