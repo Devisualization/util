@@ -10,11 +10,13 @@
 	"subPackages": [
 		{
 			"name": "core",
-			"sourcePaths": ["source/core"]
+			"sourcePaths": ["source/core"],
+			"importPaths": ["source/core"]
 		},
 		{
 			"name": "opengl",
 			"sourcePaths": ["source/opengl"],
+			"importPaths": ["source/opengl"],
             "dependencies": {
                 "derelict-gl3": ">=1.0.10",
                 "de_image:interfaces": ">=0.1.4",
