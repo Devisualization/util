@@ -22,6 +22,15 @@
                 "de_image:interfaces": ">=0.1.4",
                 "gl3n": ">=1.0.0"
             }
+		},
+		{
+			"name": "photoshop_aco",
+			"targetType": "executable",
+			"sourcePaths": ["source/photoshop_aco"],
+			"importPaths": ["source/photoshop_aco"],
+            "dependencies": {
+                "de_image:interfaces": ">=0.1.4"
+            }
 		}
 	]
 }
