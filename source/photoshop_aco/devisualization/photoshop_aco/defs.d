@@ -74,16 +74,3 @@ struct ACOPalette {
 		return ret;
 	}
 }
-
-void main() {
-	import std.file : read, append, write;
-
-	ubyte[] data = cast(ubyte[])read("test/Material Palette.aco");
-	ACOPalette palette = ACOPalette.parse(data);
-
-	write("out2.txt", "");
-	foreach(color; palette.colors) {
-		import std.conv : text;
-		append("out2.txt", color.toString() ~ " = " ~ text(color.ubytes) ~ "\n");
-	}
-}
