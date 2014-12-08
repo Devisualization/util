@@ -46,6 +46,7 @@ void addValue(ref ubyte[] data, dstring value) {
 		import std.bitmanip : nativeToBigEndian;
 		ret ~= nativeToBigEndian(c);
 	}
+	ret ~= [0, 0]; // null term
 	data ~= ret;
 }
 
