@@ -24,7 +24,7 @@
 module devisualization.util.photoshop_aco.loader;
 import devisualization.util.photoshop_aco.defs;
 
-void parseACO(ACOPalette _, ubyte[] data) {
+void parseACO(ACOPalette _, inout ubyte[] data) {
 	uint offset = 0;
 
 	if (data.getValue(offset) == 1) {
@@ -36,7 +36,7 @@ void parseACO(ACOPalette _, ubyte[] data) {
 	}
 }
 
-ushort getValue(ubyte[] data, uint index) {
+ushort getValue(inout ubyte[] data, uint index) {
 	import std.bitmanip : bigEndianToNative;
 
 	uint start = index * 2;
@@ -45,7 +45,7 @@ ushort getValue(ubyte[] data, uint index) {
 	return bigEndianToNative!ushort(values);
 }
 
-uint getValueInt(ubyte[] data, uint index) {
+uint getValueInt(inout ubyte[] data, uint index) {
 	import std.bitmanip : bigEndianToNative;
 	
 	uint start = index * 2;
@@ -54,7 +54,7 @@ uint getValueInt(ubyte[] data, uint index) {
 	return bigEndianToNative!uint(values);
 }
 
-uint readData(ACOPalette _, ubyte[] data, uint j = 0) {
+uint readData(ACOPalette _, inout ubyte[] data, uint j = 0) {
 	import devisualization.image.color;
 	ushort ver = data.getValue(j);
 

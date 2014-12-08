@@ -83,7 +83,7 @@ struct ACOPalette {
 		names ~= name;
 	}
 
-	static ACOPalette parse(ubyte[] data) {
+	static ACOPalette parse(inout ubyte[] data) {
 		import devisualization.util.photoshop_aco.loader;
 		ACOPalette ret;
 		ret.parseACO(data);
