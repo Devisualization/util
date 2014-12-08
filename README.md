@@ -8,6 +8,7 @@ Utility code used within Devisualization projects
 **Subprojects**
 - Core
 - OpenGL
+- Photoshop aco file reader/writer
 
 Core
 ---
@@ -18,3 +19,7 @@ OpenGL
 __**Scope:**__ Any code required by other projects that is shared in their purposes.
 - Wrappers, around OpenGL functions
 - Structify, structs that represent and work from for e.g. a shader program 
+
+Photoshop aco
+-----
+__**Scope:**__ Reads and writes ACO files (photoshop colour palette format).
