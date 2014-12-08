@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module devisualization.photoshop_aco.defs;
+module devisualization.util.photoshop_aco.defs;
 import devisualization.image.color;
 
 struct ACOPalette {
@@ -84,14 +84,14 @@ struct ACOPalette {
 	}
 
 	static ACOPalette parse(ubyte[] data) {
-		import devisualization.photoshop_aco.loader;
+		import devisualization.util.photoshop_aco.loader;
 		ACOPalette ret;
 		ret.parseACO(data);
 		return ret;
 	}
 
 	ubyte[] exportToData() {
-		import devisualization.photoshop_aco.exporter;
+		import devisualization.util.photoshop_aco.exporter;
 		ubyte[] ret;
 		exportData(this, ret);
 		return ret;

@@ -21,8 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module devisualization.photoshop_aco.exporter;
-import devisualization.photoshop_aco.defs;
+module devisualization.util.photoshop_aco.exporter;
+import devisualization.util.photoshop_aco.defs;
 
 void exportData(ACOPalette _, out ubyte[] data) {
 	uint offset = 0;
