@@ -69,7 +69,7 @@ uint readData(ref ACOPalette _, inout ubyte[] data, uint j = 0) {
 			j += 2;
 
 			dstring text;
-			foreach(k; j .. j + length) {
+			foreach(k; j .. j + length - 1) {
 				text ~= cast(dchar)data.getValue(k);
 			}
 
