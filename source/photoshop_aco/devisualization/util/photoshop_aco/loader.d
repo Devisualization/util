@@ -24,7 +24,7 @@
 module devisualization.util.photoshop_aco.loader;
 import devisualization.util.photoshop_aco.defs;
 
-void parseACO(ACOPalette _, inout ubyte[] data) {
+void parseACO(ref ACOPalette _, inout ubyte[] data) {
 	uint offset = 0;
 
 	if (data.getValue(offset) == 1) {
@@ -54,7 +54,7 @@ uint getValueInt(inout ubyte[] data, uint index) {
 	return bigEndianToNative!uint(values);
 }
 
-uint readData(ACOPalette _, inout ubyte[] data, uint j = 0) {
+uint readData(ref ACOPalette _, inout ubyte[] data, uint j = 0) {
 	import devisualization.image.color;
 	ushort ver = data.getValue(j);
 
