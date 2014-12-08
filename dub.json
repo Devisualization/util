@@ -25,7 +25,6 @@
 		},
 		{
 			"name": "photoshop_aco",
-			"targetType": "executable",
 			"sourcePaths": ["source/photoshop_aco"],
 			"importPaths": ["source/photoshop_aco"],
             "dependencies": {
