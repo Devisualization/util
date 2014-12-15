@@ -1,7 +1,7 @@
 Utility code used within Devisualization projects
 ====
-
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Devisualization/util?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 **TODO:**
 - Wrapper functions only go up to 1.5 (without legacy functions)
 	Based upon [DOOGLE's wrapper code](https://raw.githubusercontent.com/rikkimax/DOOGLE/master/source/OpenGL/doogle/overloads/wrappers.d)
