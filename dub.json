@@ -19,7 +19,7 @@
 			"importPaths": ["source/opengl"],
             "dependencies": {
                 "derelict-gl3": ">=1.0.10",
-                "de_image:interfaces": ">=0.1.4",
+                "de_image:interfaces": ">=0.2.2",
                 "gl3n": ">=1.0.0"
             }
 		},
@@ -28,7 +28,7 @@
 			"sourcePaths": ["source/photoshop_aco"],
 			"importPaths": ["source/photoshop_aco"],
             "dependencies": {
-                "de_image:interfaces": ">=0.1.4"
+                "de_image:interfaces": ">=0.2.2"
             }
 		}
 	]
