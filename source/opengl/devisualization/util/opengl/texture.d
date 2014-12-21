@@ -123,8 +123,14 @@ struct TextureImage {
         }
         
         void update() {
+			static ubyte[] values;
+			values = [];
+			foreach(pixel; image.rgba.allPixels) {
+				values ~= pixel.ubytes;
+			}
+
             glPixelStore(PixelStoreMode.UnpackingAlignment, 1);
-            glTexImage2D(BindTextureTarget.Texture2D, 0, InternalFormat.RGBA, cast(uint)image_.width, cast(uint)image_.height, PixelFormat.RGBA, PixelDataType.UnsignedByte, *cast(void[]*)ubyteRawColor(image.rgba.allPixels)[0].ptr);
+            glTexImage2D(BindTextureTarget.Texture2D, 0, InternalFormat.RGBA, cast(uint)image_.width, cast(uint)image_.height, PixelFormat.RGBA, PixelDataType.UnsignedByte, values);
             glINCOMPLETE.glGenerateMipmap(BindTextureTarget.Texture2D);
             glPixelStore(PixelStoreMode.UnpackingAlignment, 4);
         }
