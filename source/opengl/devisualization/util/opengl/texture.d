@@ -53,6 +53,7 @@ struct TextureImage {
         glBindTexture(BindTextureTarget.Texture2D, id_);
         glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.MinFilter, gl.GL_NEAREST_MIPMAP_NEAREST);
         glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.MagFilter, gl.GL_NEAREST);
+		update();
     }
 
     void wrapping(TextureWrapping s) {
