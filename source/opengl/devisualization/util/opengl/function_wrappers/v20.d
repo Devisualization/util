@@ -348,13 +348,13 @@ in {
     assert(value.length >= 1 && value.length <= 4);
 } body {
     if (value.length == 1)
-        gl.glUniform1fv(location, cast(int)value.length, value.ptr);
+        gl.glUniform1fv(location, 1, cast(float*)[value.ptr].ptr);
     else if (value.length == 2)
-        gl.glUniform2fv(location, cast(int)value.length, value.ptr);
+        gl.glUniform2fv(location, 1, cast(float*)[value.ptr].ptr);
     else if (value.length == 3)
-        gl.glUniform3fv(location, cast(int)value.length, value.ptr);
+        gl.glUniform3fv(location, 1, cast(float*)[value.ptr].ptr);
     else if (value.length == 4)
-        gl.glUniform4fv(location, cast(int)value.length, value.ptr);
+        gl.glUniform4fv(location, 1, cast(float*)[value.ptr].ptr);
 }
 
 void glUniform(int location, int[] value)
@@ -362,13 +362,13 @@ in {
     assert(value.length >= 1 && value.length <= 4);
 } body {
     if (value.length == 1)
-        gl.glUniform1iv(location, cast(int)value.length, value.ptr);
+        gl.glUniform1iv(location, 1, cast(int*)[value.ptr].ptr);
     else if (value.length == 2)
-        gl.glUniform2iv(location, cast(int)value.length, value.ptr);
+        gl.glUniform2iv(location, 1, cast(int*)[value.ptr].ptr);
     else if (value.length == 3)
-        gl.glUniform3iv(location, cast(int)value.length, value.ptr);
+        gl.glUniform3iv(location, 1, cast(int*)[value.ptr].ptr);
     else if (value.length == 4)
-        gl.glUniform4iv(location, cast(int)value.length, value.ptr);
+        gl.glUniform4iv(location, 1, cast(int*)[value.ptr].ptr);
 }
 
 void glUniform(int location, uint[] value)
