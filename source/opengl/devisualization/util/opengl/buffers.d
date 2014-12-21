@@ -47,11 +47,11 @@ struct IBuffer {
 struct Buffer(BufferUsages _usage, BindBufferTargets _type) {
     private {
         uint id_;
-
-        IBuffer this_;
-        alias this_ this;
     }
-    
+
+	IBuffer this_;
+	alias this_ this;
+
     this(vec2[] data...) {
         float[] vals;
         foreach(v; data) vals ~= v.vector;
