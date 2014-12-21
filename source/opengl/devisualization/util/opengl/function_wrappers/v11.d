@@ -97,7 +97,7 @@ void glDeleteTextures(uint texture) {
     gl.glDeleteTextures(1, &texture);
 }
 
-uint glGenTextures() {
+uint glGenTexture() {
     uint ret;
     gl.glGenTextures(1, &ret);
     return ret;
