@@ -11,25 +11,25 @@
 		{
 			"name": "core",
 			"sourcePaths": ["source/core"],
-			"importPaths": ["source/core"]
+			"importPaths": ["source/core"],
 		},
 		{
 			"name": "opengl",
 			"sourcePaths": ["source/opengl"],
 			"importPaths": ["source/opengl"],
-            "dependencies": {
-                "derelict-gl3": ">=1.0.10",
-                "de_image:interfaces": ">=0.2.2",
-                "gl3n": ">=1.0.0"
-            }
+                        "dependencies": {
+                            "derelict-gl3": ">=1.0.10",
+                            "de_image:interfaces": ">=0.2.2",
+                            "gl3n": ">=1.0.0"
+                        }
 		},
 		{
 			"name": "photoshop_aco",
 			"sourcePaths": ["source/photoshop_aco"],
 			"importPaths": ["source/photoshop_aco"],
-            "dependencies": {
-                "de_image:interfaces": ">=0.2.2"
-            }
+                        "dependencies": {
+                             "de_image:interfaces": ">=0.2.2"
+                        }
 		}
 	]
 }
