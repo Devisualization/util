@@ -87,6 +87,10 @@ struct TextureImage {
             image_ = value;
             setup();
         }
+
+		uint id() {
+			return id_;
+		}
     }
     
     private {
