@@ -19,7 +19,7 @@
 			"importPaths": ["source/opengl"],
                         "dependencies": {
                             "derelict-gl3": ">=1.0.10",
-                            "de_image:interfaces": ">=0.2.2",
+                            "de_image:interfaces": ">=0.3.4",
                             "gl3n": ">=1.0.0"
                         }
 		},

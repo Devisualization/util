@@ -28,6 +28,7 @@ public import devisualization.util.opengl.function_wrappers : BindBufferTargets,
 public import gl3n.linalg : vec4, vec3, vec2, mat2, mat3, mat34, mat4;
 
 alias Buffer!(BufferUsages.StaticDraw, BindBufferTargets.ArrayBuffer) StandardBuffer;
+alias Buffer!(BufferUsages.StaticDraw, BindBufferTargets.ElementArrayBuffer) IndexBuffer;
 
 struct IBuffer {
     private {

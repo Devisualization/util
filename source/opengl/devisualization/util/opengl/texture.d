@@ -32,10 +32,12 @@ struct TextureImage {
     private {
         Image image_;
         uint id_;
+		uint activeTexture;
     }
 
-    this(Image image) {
+    this(Image image, uint textureUnit=0) {
         image_ = image;
+		activeTexture = textureUnit;
         setup();
     }
     
@@ -49,6 +51,7 @@ struct TextureImage {
     }
     
     void bind() {
+		glActiveTexture(activeTexture);
         glBindTexture(BindTextureTarget.Texture2D, id_);
         glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.MinFilter, gl.GL_NEAREST_MIPMAP_NEAREST);
         glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.MagFilter, gl.GL_NEAREST);
