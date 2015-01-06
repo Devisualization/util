@@ -70,7 +70,7 @@ private {
  * Returns:
  * 		A cached value of factorial between 0 and 32 recursion.
  */
-double factorial(int n)
+double factorial(size_t n)
 in {
 	assert(n >= 0);
 	assert(n <= 32);

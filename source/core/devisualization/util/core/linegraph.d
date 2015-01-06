@@ -73,7 +73,7 @@ struct LineGraphType(bool checkNegative, TYPE) {
 	}
 
 	/**
-	 * Adds a point line.
+	 * Adds a posize_t line.
 	 * 
 	 * Params:
 	 * 		x	=	To position
@@ -108,8 +108,8 @@ struct LineGraphType(bool checkNegative, TYPE) {
 	 * Params:
 	 * 		x	=	To position
 	 * 		y	=	To position
-	 * 		x2	=	Point to manipulate by
-	 * 		y2	=	Point to manipulate by
+	 * 		x2	=	Posize_t to manipulate by
+	 * 		y2	=	Posize_t to manipulate by
 	 */
 	void bezierCurveTo(TYPE x, TYPE y, TYPE x2, TYPE y2) {
 		coordsx ~= x;
@@ -263,7 +263,7 @@ private {
 
 					currentBezierCurve++;
 
-					double Ni(int n, int i) {
+					double Ni(size_t n, size_t i) {
 						import devisualization.util.core.math : factorial;
 
 						double ni;
@@ -274,7 +274,7 @@ private {
 						return ni;
 					}
 
-					double Bernstein(int n, int i, double t) {
+					double Bernstein(size_t n, size_t i, double t) {
 						double basis;
 						double ti; /* t^i */
 						double tni; /* (1 - t)^i */
@@ -296,8 +296,8 @@ private {
 						return basis;
 					}
 
-					void Bezier2D(int cpts) {
-						int npts = xPoints.length;
+					void Bezier2D(size_t cpts) {
+						size_t npts = xPoints.length;
 						double t;
 						double step2 = 1f / (cpts - 1);
 
@@ -305,14 +305,14 @@ private {
 								  
 		              	t = 0;
 									  
-		             	for (int j = 0; j < cpts; j++) { 
+		             	for (size_t j = 0; j < cpts; j++) { 
 							if ((1.0 - t) < 5e-6) 
 								t = 1.0;
 								  
 							double xout = 0;
 							double yout = 0;
 
-	                  		for (int k = 0; k < npts; k++) {
+	                  		for (size_t k = 0; k < npts; k++) {
 								double basis = Bernstein(npts - 1, k, t);
 								xout += basis * xPoints[k];
 								yout += basis * yPoints[k];
@@ -327,12 +327,12 @@ private {
 						}
 					}
 
-					int xPointsS;
+					size_t xPointsS;
 					if (lastx > x)
 						xPointsS = lastx - x;
 					else
 						xPointsS = x - lastx;
-					int yPointsS;
+					size_t yPointsS;
 					if (lasty > y)
 						yPointsS = lasty - y;
 					else
