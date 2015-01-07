@@ -38,7 +38,7 @@ import std.traits : isSomeString;
  * Returns:
  * 		The text that has been replaced
  */
-pure T replace(T)(T text, T oldText, T newText, bool caseSensitive = true, bool first = false) if (isSomeString!T) {
+T replace(T)(T text, T oldText, T newText, bool caseSensitive = true, bool first = false) pure if (isSomeString!T) {
 	T ret;
 	T tempData;
 	bool stop;
@@ -115,7 +115,7 @@ unittest {
  * Returns:
  * 		The multiplied string
  */
-pure T multiply(T)(T text, size_t count) if (isSomeString!T) {
+T multiply(T)(T text, size_t count) pure if (isSomeString!T) {
 	alias U = typeof(cast()T.init[0]);
 	U[] ret;
 	ret.length = text.length * count;
