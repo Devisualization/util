@@ -28,17 +28,17 @@ import devisualization.image.color;
 
 struct ACOPalette {
 	package {
-		Color_RGBA[] colors;
+		Color_RGBA*[] colors;
 		dstring[] names;
 	}
 
 	@property {
-		Color_RGBA lookup(string name) {
+		Color_RGBA* lookup(string name) {
 			import std.conv : to;
 			return lookup(to!dstring(name));
 		}
 
-		Color_RGBA lookup(dstring name) {
+		Color_RGBA* lookup(dstring name) {
 			foreach(i, _; names) {
 				if (_ == name)
 					return colors[i];
@@ -58,7 +58,7 @@ struct ACOPalette {
 	}
 
 	void remove(dstring name) {
-		Color_RGBA[] ncolors;
+		Color_RGBA*[] ncolors;
 		dstring[] nnames;
 
 		foreach(i, n; names) {
