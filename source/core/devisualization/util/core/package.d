@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 module devisualization.util.core;
+public import devisualization.util.core.assetmanager;
 public import devisualization.util.core.linegraph;
 public import devisualization.util.core.math;
 public import devisualization.util.core.text;
