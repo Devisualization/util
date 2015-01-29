@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module devisualization.util.core.assetmanagement;
+module devisualization.util.core.assetmanager;
 
 /**
  * Loads assest based upon, local to program, defaults, application provided, system locatiom and user location.
@@ -37,63 +37,8 @@ class AssetManager(T) {
         
         string localPath, userPath, systemPath;
     }
-    
-    /**
-     * Registers a default assest value provided by the application
-     *
-     * Params:
-     *     mod    =    Name of assest
-     *     value  =    The value of the asset
-     */
-    void registerDefault(string mod, T value) { defaults[mod] = value; }
-    
-    /**
-     * Registers an assest value provided by the application
-     *
-     * Params:
-     *     mod    =    Name of asset
-     *     value  =    The value of the asset
-     */
-    void registerApp(string mod, T value) { apps[mod] = value; }
-    
-    /**
-     * Registers application assets that was compiled in via Bin2d
-     *
-     * Params:
-     *     filterExtension  =    Extension of files to only use
-     *     asDefault        =    Is this a default value or application override? Default: true (default value)
-     */
-    void registerFromBin2d(string bin2dmod)(string filterExtension, bool asDefault=true) {
-        import std.algorithm : canFind;
-        import std.string : tr;
-        import std.path : extension;
-        mixin("import " ~ bin2dmod ~ ";");
-        
-        foreach(i, fn; assetNames) {
-            if (fn.canFind("_") && extension(fn.tr("_", ".")) == filterExtension) {
-                if (asDefault)
-                    registerDefault(fn, cast(T)assetValues[i]);
-                else
-                    registerApp(fn, cast(T)assetValues[i]);
-            }
-        }
-    }
-
-    /**
-     * Gets an assest based upon its name
-     *
-     * Params:
-     *     mod    =    Name of asset
-     */
-    T opIndex(string mod) {
-        if (mod in local) return local[mod];
-        if (mod in apps) return apps[mod];
-        if (mod in users) return users[mod];
-        if (mod in systems) return systems[mod];
-        return defaults.get(mod, T.init);
-    }
-
-    this(string dirIndex, string app, string company = null, string customSystemInstallDirectory=null) {
+	
+	this(string dirIndex, string app, string company = null, string customSystemInstallDirectory=null) {
         import std.path : buildPath, baseName;
         import std.process : environment;
         localPath = buildPath(dirIndex);
@@ -134,6 +79,62 @@ class AssetManager(T) {
         }
         
         update();
+    }
+    
+    /**
+     * Registers a default assest value provided by the application
+     *
+     * Params:
+     *     mod    =    Name of assest
+     *     value  =    The value of the asset
+     */
+    void registerDefault(string mod, T value) { defaults[mod] = value; }
+    
+    /**
+     * Registers an assest value provided by the application
+     *
+     * Params:
+     *     mod    =    Name of asset
+     *     value  =    The value of the asset
+     */
+    void registerApp(string mod, T value) { apps[mod] = value; }
+    
+    /**
+     * Registers application assets that was compiled in via Bin2d
+     *
+     * Params:
+     *     filterExtension  =    Extension of files to only use
+     *     asDefault        =    Is this a default value or application override? Default: true (default value)
+     */
+    void registerFromBin2d(string bin2dmod)(string filterExtension, bool asDefault=true) {
+        import std.algorithm : canFind;
+        import std.string : tr;
+        import std.path : extension;
+        mixin("import " ~ bin2dmod ~ ";");
+        
+        foreach(i, fn; assetNames) {
+			string oname = assetOriginalNames[i];
+            if (oname.extension == filterExtension) {
+                if (asDefault)
+                    registerDefault(oname, cast(T)assetValues[i]);
+                else
+                    registerApp(oname, cast(T)assetValues[i]);
+            }
+        }
+    }
+
+    /**
+     * Gets an assest based upon its name
+     *
+     * Params:
+     *     mod    =    Name of asset
+     */
+    T opIndex(string mod) {
+        if (mod in local) return local[mod];
+        if (mod in apps) return apps[mod];
+        if (mod in users) return users[mod];
+        if (mod in systems) return systems[mod];
+        return defaults.get(mod, T.init);
     }
     
     /**
