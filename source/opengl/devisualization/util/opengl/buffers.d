@@ -45,7 +45,7 @@ struct IBuffer {
     }
 }
 
-struct Buffer(BufferUsages _usage, BindBufferTargets _type) {
+class Buffer(BufferUsages _usage, BindBufferTargets _type) {
     private {
         uint id_;
     }
@@ -130,7 +130,7 @@ struct Buffer(BufferUsages _usage, BindBufferTargets _type) {
     void[] opSlice(size_t offset, size_t length) {
         void[] data;
         data.length = length;
-        glGetBufferSubData(_type, offset, data);
+        glGetBufferSubData(_type, cast(uint)offset, data);
         return data;
     }
     
