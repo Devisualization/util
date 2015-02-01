@@ -27,7 +27,7 @@ module devisualization.util.core.assetmanager;
  * Loads assest based upon, local to program, defaults, application provided, system locatiom and user location.
  * Supports bin2d's generated modules to load from.
  */
-class AssetManager(T) {
+struct AssetManager(T) {
     private __gshared {
         T[string] local;
         T[string] defaults;
@@ -48,15 +48,15 @@ class AssetManager(T) {
                 userPath = buildPath(environment["LOCALAPPDATA"], app, dirIndex);
                 
                 if (customSystemInstallDirectory is null)
-                    programFilesPath = buildPath(environment["PROGRAMFILES"], app, dirIndex);
+					systemPath = buildPath(environment["PROGRAMFILES"], app, dirIndex);
                 else
-                    programFilesPath = buildPath(customSystemInstallDirectory, app, dirIndex);
+					systemPath = buildPath(customSystemInstallDirectory, app, dirIndex);
             } else {
                 userPath = buildPath(environment["LOCALAPPDATA"], company, app, dirIndex);
                 if (customSystemInstallDirectory is null)
-                    programFilesPath = buildPath(environment["PROGRAMFILES"], company, app, dirIndex);
+					systemPath = buildPath(environment["PROGRAMFILES"], company, app, dirIndex);
                 else
-                    programFilesPath = buildPath(customSystemInstallDirectory, company, app, dirIndex);
+					systemPath = buildPath(customSystemInstallDirectory, company, app, dirIndex);
             }
         } else version(Posix) {
             if (company is null) {
@@ -149,6 +149,7 @@ class AssetManager(T) {
     
     private {
         import std.file : exists, mkdirRecurse, isDir, dirEntries, SpanMode, read, FileException;
+		import std.path : baseName;
         
         T[string] getFilesFromFileSystem(string dir)
         in {
