@@ -1,35 +1,38 @@
 {
-	"name": "de_util",
-	"description": "Utility code for the Devisualization projects.",
-	"copyright": "Copyright © 2014, Richard Andrew Cattermole, Devisualization",
-	"authors": ["Richard Andrew Cattermole"],
-	"homepage": "https://github.com/Devisualization/util",
-	"license": "MIT",
-	"sourcePaths": [],
-	"targetType": "none",
-	"subPackages": [
-		{
-			"name": "core",
-			"sourcePaths": ["source/core"],
-			"importPaths": ["source/core"],
-		},
-		{
-			"name": "opengl",
-			"sourcePaths": ["source/opengl"],
-			"importPaths": ["source/opengl"],
-                        "dependencies": {
-                            "derelict-gl3": ">=1.0.10",
-                            "de_image:interfaces": ">=0.3.4",
-                            "gl3n": ">=1.0.0"
-                        }
-		},
-		{
-			"name": "photoshop_aco",
-			"sourcePaths": ["source/photoshop_aco"],
-			"importPaths": ["source/photoshop_aco"],
-                        "dependencies": {
-                             "de_image:interfaces": ">=0.2.2"
-                        }
-		}
-	]
+    "name": "de_util",
+    "description": "Utility code for the Devisualization projects.",
+    "copyright": "Copyright © 2014, Richard Andrew Cattermole, Devisualization",
+    "authors": ["Richard Andrew Cattermole"],
+    "homepage": "https://github.com/Devisualization/util",
+    "license": "MIT",
+    "sourcePaths": [],
+    "targetType": "none",
+    "subPackages": [
+        {
+            "name": "core",
+            "sourcePaths": ["source/core"],
+            "importPaths": ["source/core"],
+			"dependencies": {
+                "gl3n": ">=1.0.0"
+			}
+        },
+        {
+            "name": "opengl",
+            "sourcePaths": ["source/opengl"],
+            "importPaths": ["source/opengl"],
+            "dependencies": {
+                "derelict-gl3": ">=1.0.10",
+                "de_image:interfaces": ">=0.3.4",
+                "gl3n": ">=1.0.0"
+            }
+        },
+        {
+            "name": "photoshop_aco",
+            "sourcePaths": ["source/photoshop_aco"],
+            "importPaths": ["source/photoshop_aco"],
+            "dependencies": {
+                 "de_image:interfaces": ">=0.2.2"
+            }
+        }
+    ]
 }
