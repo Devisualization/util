@@ -34,3 +34,4 @@ public import devisualization.util.algorithms.pathfinding.astar;
 public import devisualization.util.algorithms.pathfinding.breadthfirst;
 public import devisualization.util.algorithms.pathfinding.defs;
 public import devisualization.util.algorithms.pathfinding.dijkstra;
+public import devisualization.util.algorithms.pathfinding.bellmanford;
