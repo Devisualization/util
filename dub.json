@@ -11,11 +11,16 @@
         {
             "name": "core",
             "sourcePaths": ["source/core"],
-            "importPaths": ["source/core"],
+            "importPaths": ["source/core"]
+        },
+		{
+			"name": "algorithms",
+			"sourcePaths": ["source/algorithms"],
+			"importPaths": ["source/algorithms"],
 			"dependencies": {
                 "gl3n": ">=1.0.0"
 			}
-        },
+		},
         {
             "name": "opengl",
             "sourcePaths": ["source/opengl"],

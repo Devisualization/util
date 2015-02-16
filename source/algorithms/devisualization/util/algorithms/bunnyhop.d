@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module devisualization.util.core.algorithms.bunnyhop;
+module devisualization.util.algorithms.bunnyhop;
 import gl3n.linalg : vec3, dot;
 
 /**
