@@ -1,5 +1,5 @@
 /**
- * Utility code for path finding
+ * Breadthfirst path finding algorithm
  *
  * License:
  *     D version of code is under MIT. The original is under Apache 2.0.

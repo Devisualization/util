@@ -1,5 +1,5 @@
 /**
- * Utility code for path finding
+ * Breadthfirst path finding algorithm
  *
  * License:
  *     D version of code is under MIT. The original is under Apache 2.0.
@@ -29,8 +29,52 @@
  * See_Also:
  *		http://www.redblobgames.com/pathfinding/a-star/implementation.html
  */
-module devisualization.util.algorithms.pathfinding;
-public import devisualization.util.algorithms.pathfinding.astar;
-public import devisualization.util.algorithms.pathfinding.breadthfirst;
-public import devisualization.util.algorithms.pathfinding.defs;
-public import devisualization.util.algorithms.pathfinding.dijkstra;
+module devisualization.util.algorithms.pathfinding.dijkstra;
+import devisualization.util.algorithms.pathfinding.defs;
+
+/**
+ * Locates the next node in graph to get to a position
+ * Uses Dijkstra search algorithm
+ *
+ * Params:
+ *    graph			=	The graph of nodes
+ *    start			=	Starting position to go to
+ *    goal			=	The end position 
+ *    came_from		=	The positions between start and end
+ *    cost_so_far	=	Sum of weights (cost) to get to goal from start
+ */
+void dijkstra_search(T, U)(GridWithWeights graph, T start, T goal, out T[T] came_from, out U[T] cost_so_far) {
+	PriorityQueue!(T, U) frontier;
+	frontier.put(start, 0);
+	
+	cost_so_far[start] = 0;
+	
+	while(!frontier.empty) {
+		T current = frontier.get();
+		if (current == goal)
+			break;
+		
+		foreach(next; graph.neighbors(current)) {
+			U new_cost = cost_so_far[current] + graph.cost(current, next);
+		
+			if (next !in cost_so_far || new_cost < cost_so_far[next]) {
+				cost_so_far[next] = new_cost;
+				priority = new_cost;
+				
+				frontier.put(next, priority);
+				visited[next] = current;
+			}
+		}
+	}
+}
+
+unittest {
+	GridWithWeights!(XY, int) grid = diagram4();
+	
+	XY[XY] came_from;
+	int[XY] cost_so_far;
+	dijkstra_search(grid, XY(1, 4), XY(7, 8), came_from, cost_so_far);
+	XY[] path = reconstruct_path(came_from, XY(1, 4), XY(7, 8));
+	
+	// TODO: asserts
+}
