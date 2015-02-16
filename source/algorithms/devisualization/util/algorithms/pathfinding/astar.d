@@ -44,7 +44,7 @@ import devisualization.util.algorithms.pathfinding.defs;
  *    came_from		=	The positions between start and end
  *    cost_so_far	=	Sum of weights (cost) to get to goal from start
  */
-void a_star_search(T)(GridWithWeights graph, T start, T goal, out T[T] came_from, out U[T] cost_so_far) {
+void a_star_search(T, U)(GridWithWeights graph, T start, T goal, out T[T] came_from, out U[T] cost_so_far) {
 	PriorityQueue!(T, U) frontier;
 	frontier.put(start, 0);
 	
