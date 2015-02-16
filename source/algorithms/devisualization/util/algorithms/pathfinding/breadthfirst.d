@@ -52,7 +52,7 @@ T[T] breadth_first_search(T)(Graph graph, T start) {
 		foreach(next; graph.neighbors(current)) {
 			if (next !in came_from) {
 				frontier.put(next);
-				visited[next] = current;
+				came_from[next] = current;
 			}
 		}
 	}
@@ -84,7 +84,7 @@ T[T] breadth_first_search(T)(Graph graph, T start, T goal) {
 		foreach(next; graph.neighbors(current)) {
 			if (next !in came_from) {
 				frontier.put(next);
-				visited[next] = current;
+				came_from[next] = current;
 			}
 		}
 	}
@@ -124,4 +124,37 @@ unittest {
 	XY[] parents = breadth_first_search(grid, XY(8, 7), XY(17, 2));
 	
 	//TODO: asserts
+}
+
+/**
+ * Locates the next node in graph to get to a position
+ *
+ * Params:
+ *    graph		=	The graph of nodes
+ *    start		=	Starting position to go to
+ *    goal		=	The end position 
+ *    came_from	=	Output: An AA mapping a position to another to get to a point
+ *    distance	=	Output: Distance of a node to the end point
+ *
+ * See_Also:
+ *     http://www.redblobgames.com/pathfinding/tower-defense/
+ */
+void breadth_first_search(T, U)(Graph graph, T start, T goal, out T[T] came_from, out U[T] distance) {
+	Queue!T frontier;
+	frontier.put(start);
+	distance[start] = 0;
+	
+	while(!frontier.empty) {
+		T current = frontier.get();
+		if (current == goal)
+			break;
+		
+		foreach(next; graph.neighbors(current)) {
+			if (next !in came_from) {
+				frontier.put(next);
+				came_from[next] = current;
+				distance[next] = 1 + distance[current];
+			}
+		}
+	}
 }
