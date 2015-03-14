@@ -196,11 +196,13 @@ private {
                      void plot(TYPE xx, TYPE yy, float w) {
                         // is pixel in range?
                         // algo can go outside
-                        if (y > lasty && yy <= y && yy >= lasty) {
+						// FIXME:
+                        /*if (y > lasty && yy <= y && yy >= lasty) {
                             if (x > lastx && xx <= x && xx >= lastx) {
                                 del(xx, yy, w);
                             }
-                        }
+                        }*/
+						del(xx, yy, w);
                     }
 
                     TYPE ipart(float x) { return cast(TYPE)x; } // integer part of x
@@ -283,8 +285,8 @@ private {
                     if (func == GraphFunction.SplineCurve) {
                         TYPE[] xPoints2;
                         TYPE[] yPoints2;
-                        xPoints2.length = xPoints.length;
-                        yPoints2.length = yPoints.length;
+                        xPoints2.length = xPoints.length + 1;
+                        yPoints2.length = yPoints.length + 1;
                         
                         float tension = splineCurveTensions[currentSpline];
                         
@@ -327,7 +329,7 @@ private {
                         double a1 = factorial(n);
                         double a2 = factorial(i);
                         double a3 = factorial(n - i);
-                        ni =  a1/ (a2 * a3);
+                        ni = a1 / (a2 * a3);
                         return ni;
                     }
 
@@ -358,18 +360,18 @@ private {
                         double t;
                         double step2 = 1f / (cpts - 1);
 
-                           // Calculate points on curve
+                        // Calculate points on curve
                                   
-                          t = 0;
+                        t = 0;
                                       
-                         for (size_t j = 0; j < cpts; j++) { 
+                        for (size_t j = 0; j < cpts; j++) { 
                             if ((1.0 - t) < 5e-6) 
                                 t = 1.0;
                                   
                             double xout = 0;
                             double yout = 0;
 
-                              for (size_t k = 0; k < npts; k++) {
+                            for (size_t k = 0; k < npts; k++) {
                                 double basis = Bernstein(npts - 1, k, t);
                                 xout += basis * xPoints[k];
                                 yout += basis * yPoints[k];
