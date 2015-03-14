@@ -92,7 +92,8 @@ struct Camera {
             import std.math : cos, sin;
             mat3 matrix = mat3.identity;
 
-            matrix = matrix.translate(-position_.x, -position.y, -position_.z);
+			if (translate)
+            	matrix = matrix.translate(-position_.x, -position.y, -position_.z);
             matrix = matrix.rotate(ry, vec3(cos(rx), 0, sin(rx)));
             matrix = matrix.rotate(-rx, vec3(0, 1, 0));
 
