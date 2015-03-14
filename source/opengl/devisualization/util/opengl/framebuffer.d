@@ -24,6 +24,7 @@
 module devisualization.util.opengl.framebuffer;
 import devisualization.util.opengl.function_wrappers;
 import devisualization.util.opengl.texture;
+import devisualization.util.opengl.renderbuffer;
 import glINCOMPLETE = derelict.opengl3.gl3;
 
 class FrameBuffer {
@@ -40,11 +41,19 @@ class FrameBuffer {
 	}
 
 	void bind() {
-		glINCOMPLETE.glBindFramebuffer(glINCOMPLETE.GL_DRAW_FRAMEBUFFER, id_);
+		glINCOMPLETE.glBindFramebuffer(glINCOMPLETE.GL_FRAMEBUFFER, id_);
 	}
 
-	void attach(TextureImage texture) {
-		glINCOMPLETE.glFramebufferTexture2D(glINCOMPLETE.GL_DRAW_FRAMEBUFFER, glINCOMPLETE.GL_COLOR_ATTACHMENT0, glINCOMPLETE.GL_TEXTURE_2D, texture.id, 0);
+	void attach(TextureImage texture, ubyte colorI = 0) {
+		glINCOMPLETE.glFramebufferTexture2D(glINCOMPLETE.GL_FRAMEBUFFER, glINCOMPLETE.GL_COLOR_ATTACHMENT0 + colorI, glINCOMPLETE.GL_TEXTURE_2D, texture.id, 0);
+	}
+
+	void attach(RenderBuffer buffer) {
+		glINCOMPLETE.glFramebufferRenderbuffer(glINCOMPLETE.GL_FRAMEBUFFER, glINCOMPLETE.GL_DEPTH_STENCIL_ATTACHMENT, glINCOMPLETE.GL_RENDERBUFFER, buffer.id);
+	}
+
+	bool isComplete() {
+		return glINCOMPLETE.glCheckFramebufferStatus(glINCOMPLETE.GL_FRAMEBUFFER) != glINCOMPLETE.GL_FRAMEBUFFER_COMPLETE;
 	}
 	
 	@property uint id() {
@@ -53,7 +62,7 @@ class FrameBuffer {
 
 	static {
 		void unbind() {
-			glINCOMPLETE.glBindFramebuffer(glINCOMPLETE.GL_DRAW_FRAMEBUFFER, 0);
+			glINCOMPLETE.glBindFramebuffer(glINCOMPLETE.GL_FRAMEBUFFER, 0);
 		}
 	}
 }

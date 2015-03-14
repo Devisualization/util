@@ -26,17 +26,17 @@ import devisualization.util.opengl.function_wrappers;
 import devisualization.util.opengl.texture;
 import glINCOMPLETE = derelict.opengl3.gl3;
 
-class RenderBuffer {
+struct RenderBuffer {
 	private {
 		uint id_;
-	}
-
-	this() {
-		glINCOMPLETE.glGenRenderbuffers(1, &id_);
+		uint width_, height_;
 	}
 
 	this(uint width, uint height, InternalFormat format) {
-		this();
+		width_ = width;
+		height_ = height;
+
+		glINCOMPLETE.glGenRenderbuffers(1, &id_);
 		bind();
 		glINCOMPLETE.glRenderbufferStorage(glINCOMPLETE.GL_RENDERBUFFER, format, width, height);
 	}
@@ -53,6 +53,37 @@ class RenderBuffer {
 		uint id() {
 			return id_;
 		}
+
+		uint width() {
+			return width_;
+		}
+
+		uint height() {
+			return height_;
+		}
+	}
+
+	/**
+	 * 
+	 * Params:
+	 * 		x	=	Default: 0 (left)
+	 * 		y	=	Default: height (top), use 0 for bottom
+	 * 
+	 * Returns:
+	 * 		TODO: fix data type, should really be an Image!
+	 */
+	ubyte[] readData(uint x = 0, uint y = height_) {
+		return cast(ubyte[])glReadPixels(x, y, width_, height_, ReadBlockPixelsFormat.RGBA, ReadBlockPixelsType.UnsignedByte);
+	}
+
+	/**
+	 * 
+	 * Params:
+	 * 		x	=	Default: 0 (left)
+	 * 		y	=	Default: height (top), use 0 for bottom
+	 */
+	float[] readDepthComponent(uint x = 0, uint y = height_) {
+		return cast(float[])glReadPixels(x, y, width_, height_, ReadBlockPixelsFormat.DepthComponent, ReadBlockPixelsType.Float);
 	}
 
 	static {

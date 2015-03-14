@@ -33,6 +33,8 @@ struct TextureImage {
         Image image_;
         uint id_;
 		uint activeTexture;
+
+		ubyte[] values;
     }
 
     this(Image image, uint textureUnit=0) {
@@ -50,8 +52,8 @@ struct TextureImage {
         return cast(uint)id_;
     }
     
-    void bind() {
-		glActiveTexture(activeTexture);
+    void bind(uint unit = 0) {
+		glActiveTexture(activeTexture + unit);
         glBindTexture(BindTextureTarget.Texture2D, id_);
         glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.MinFilter, gl.GL_NEAREST_MIPMAP_NEAREST);
         glTexParameter(TextureParameterTarget.Texture2D, TextureParameterName.MagFilter, gl.GL_NEAREST);
@@ -95,25 +97,26 @@ struct TextureImage {
 			return id_;
 		}
     }
+
+	void update() {
+		auto rgba = image.rgba;
+		values.length = rgba.length;
+		
+		foreach(i, pixel; rgba.allPixels) {
+			values[i .. i + 4] = pixel.ubytes;
+		}
+		
+		glPixelStore(PixelStoreMode.UnpackingAlignment, 1);
+		glTexImage2D(BindTextureTarget.Texture2D, 0, InternalFormat.RGBA, cast(uint)image_.width, cast(uint)image_.height, PixelFormat.RGBA, PixelDataType.UnsignedByte, values);
+		glINCOMPLETE.glGenerateMipmap(BindTextureTarget.Texture2D);
+		glPixelStore(PixelStoreMode.UnpackingAlignment, 4);
+	}
     
     private {
         void setup() {
             glGenTextures(id_);
             bind();
             update();
-        }
-        
-        void update() {
-			static ubyte[] values;
-			values = [];
-			foreach(pixel; image.rgba.allPixels) {
-				values ~= pixel.ubytes;
-			}
-
-            glPixelStore(PixelStoreMode.UnpackingAlignment, 1);
-            glTexImage2D(BindTextureTarget.Texture2D, 0, InternalFormat.RGBA, cast(uint)image_.width, cast(uint)image_.height, PixelFormat.RGBA, PixelDataType.UnsignedByte, values);
-            glINCOMPLETE.glGenerateMipmap(BindTextureTarget.Texture2D);
-            glPixelStore(PixelStoreMode.UnpackingAlignment, 4);
         }
     }
 }
