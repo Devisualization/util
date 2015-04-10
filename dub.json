@@ -18,7 +18,7 @@
 			"sourcePaths": ["source/algorithms"],
 			"importPaths": ["source/algorithms"],
 			"dependencies": {
-                "gl3n": ">=1.0.0"
+                "gl3n": ">=1.0.1"
 			}
 		},
         {
@@ -28,7 +28,7 @@
             "dependencies": {
                 "derelict-gl3": ">=1.0.10",
                 "de_image:interfaces": ">=0.3.4",
-                "gl3n": ">=1.0.0"
+                "gl3n": ">=1.0.1"
             }
         },
         {
