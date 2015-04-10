@@ -24,3 +24,4 @@
 module devisualization.util.algorithms;
 public import devisualization.util.algorithms.bunnyhop;
 public import devisualization.util.algorithms.pathfinding;
+public import devisualization.util.algorithms.modification_counter;
