@@ -46,26 +46,30 @@ struct ModifierCounter(T) {
 			return currentValue;
 		}
 
-		void set(T v) {
+		void set(T v, bool immediate=false) {
 			import std.traits : isPointer, isSomeFunction;
-			newValue = currentValue;
+			newValue = v;
 
-			static if (isPointer!T || isSomeFunction!T) {
-				if (newValue !is v)
-					counter = counterSetTo;
+			if (immediate) {
+				currentValue = newValue;
+				counter = 0;
 			} else {
-				if (newValue != v)
-					counter = counterSetTo;
+				static if (isPointer!T || isSomeFunction!T) {
+					if (currentValue !is v)
+						counter = counterSetTo;
+				} else {
+					if (currentValue != v)
+						counter = counterSetTo;
+				}
 			}
 		}
 
 		void mark() {
-			if (counter > 1) {
+			if (counter >= 1) {
 				counter--;
 			} else {
 				currentValue = newValue;
 			}
 		}
 	}
-
 }
