@@ -28,16 +28,28 @@ import gl3n.linalg;
 class ShaderProgram {
 	private {
 		uint id_;
-		Shader[] shaders;
 	}
 	
 	this(string vert, string frag=null, string geom=null) {
-		if (frag is null)
-			this(new Shader(vert, ShaderTypes.VertexShader), null, null);
-		else if (geom is null)
-			this(new Shader(vert, ShaderTypes.VertexShader), new Shader(frag, ShaderTypes.FragmentShader), null);
-		else
-			this(new Shader(vert, ShaderTypes.VertexShader), new Shader(frag, ShaderTypes.FragmentShader), new Shader(geom, ShaderTypes.GeometryShader));
+		import std.typecons : scoped;
+		
+		if (frag !is null && geom !is null) {
+			auto vertS = scoped!Shader(vert, ShaderTypes.VertexShader);
+			auto fragS = scoped!Shader(frag, ShaderTypes.FragmentShader);
+			auto geomS = scoped!Shader(geom, ShaderTypes.GeometryShader);
+			this(vertS, fragS, geomS);
+		} else if (frag !is null) {
+			auto vertS = scoped!Shader(vert, ShaderTypes.VertexShader);
+			auto fragS = scoped!Shader(frag, ShaderTypes.FragmentShader);
+			this(vertS, fragS, null);
+		} else if (geom !is null) {
+			auto vertS = scoped!Shader(vert, ShaderTypes.VertexShader);
+			auto geomS = scoped!Shader(geom, ShaderTypes.GeometryShader);
+			this(vertS, null, geomS);
+		} else {
+			auto vertS = scoped!Shader(vert, ShaderTypes.VertexShader);
+			this(vertS, null, null);
+		}
 	}
 	
 	this(Shader vert = null, Shader frag = null, Shader geom = null) {
@@ -59,21 +71,14 @@ class ShaderProgram {
 	}
 	
 	void attach(Shader shader, bool linkCall = true) {
-		shaders ~= shader;
 		// attach the shader
-		glAttachShader(id_, cast(uint)shader);
+		glAttachShader(id_, shader.id);
 		if (linkCall)
 			link();
 	}
 	
 	void detach(Shader shader) {
-		Shader[] ret;
-		foreach (s; shaders) {
-			if (s != shader)
-				ret ~= s;
-		}
-		shaders = ret;
-		glDetachShader(id_, cast(uint)shader);
+		glDetachShader(id_, shader.id);
 		link();
 	}
 	
@@ -85,8 +90,8 @@ class ShaderProgram {
 		return glGetUniformLocation(id_, name);
 	}
 	
-	uint opCast(T:uint)() {
-		return cast(uint)id_;
+	@property {
+		uint id() { return id_; }
 	}
 	
 	void bind() {
@@ -179,7 +184,7 @@ class Shader {
 	private {
 		//ShaderObj id_;
 		uint id_;
-		ShaderTypes type;
+		ShaderTypes type_;
 	}
 	
 	/**
@@ -187,9 +192,9 @@ class Shader {
      */
 	this(string source, ShaderTypes type) {
 		// create
-		id_ = glCreateShader(type);
+		id_ = glCreateShader(type_);
 		opAssign(source);
-		this.type = type;
+		type_ = type;
 		compile();
 	}
 	
@@ -203,12 +208,9 @@ class Shader {
 		compile();
 	}
 	
-	ShaderTypes opCast(T : ShaderTypes)() {
-		return type;
-	}
-	
-	uint opCast(T : uint)() {
-		return cast(uint)id_;
+	@property {
+		ShaderTypes type() { return type_; }
+		uint id() { return id_; }
 	}
 	
 	private {
