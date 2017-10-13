@@ -103,7 +103,7 @@ struct managed(Type) {
 				assert(value !is null, "Class instance must not be null.");
 				assert(allocator !is null, "Allocator instance must not be null");
 			} body {
-			managed!Type ret;
+			managed!Type ret=void;
 			
 			ManagedInternalData.create(ret, managers, allocator);
 			ret.__managedInternal.value = value;
@@ -117,7 +117,7 @@ struct managed(Type) {
 			in {
 				assert(allocator !is null, "Allocator instance must not be null");
 			} body {
-			managed!Type ret;
+			managed!Type ret=void;
 			
 			ManagedInternalData.create(ret, managers, allocator);
 			ret.__managedInternal.value = value;
@@ -132,7 +132,7 @@ struct managed(Type) {
 				assert(value.length > 0, "Value instance must not be empty.");
 				assert(allocator !is null, "Allocator instance must not be null");
 			} body {
-			managed!Type ret;
+			managed!Type ret=void;
 			
 			ManagedInternalData.create(ret, managers, allocator);
 			ret.__managedInternal.value = value;
@@ -146,7 +146,7 @@ struct managed(Type) {
 			assert(value !is null, "Value instance must not be null.");
 			assert(allocator !is null, "Allocator instance must not be null");
 		} body {
-			managed!Type ret;
+			managed!Type ret=void;
 			
 			ManagedInternalData.create(ret, managers, allocator);
 			ret.__managedInternal.selfReUpdate = value;
@@ -160,7 +160,7 @@ struct managed(Type) {
 			in {
 				assert(allocator !is null, "Allocator instance must not be null");
 			} body {
-			managed!Type ret;
+			managed!Type ret=void;
 			
 			ManagedInternalData.create(ret, managers, allocator);
 			
@@ -180,7 +180,7 @@ struct managed(Type) {
 	static if (!(is(Type == const) || is(Type == immutable))) {
 		/// Adds const
 		managed!(const(Type)) opCast(Type2)() if (is(Type2==managed!(const(Type)))) {
-			managed!(immutable(Type)) ret;
+			managed!(immutable(Type)) ret=void;
 			
 			__managedInternal.copyInto(ret);
 			
@@ -189,7 +189,7 @@ struct managed(Type) {
 		
 		/// Adds immutable
 		managed!(immutable(Type)) opCast(Type2)() if (is(Type2==managed!(immutable(Type)))) {
-			managed!(immutable(Type)) ret;
+			managed!(immutable(Type)) ret=void;
 			
 			__managedInternal.copyInto(ret);
 			
@@ -200,7 +200,7 @@ struct managed(Type) {
 	static if (is(Type==class) || is(Type==interface)) {
 		/// Casts class to a more generic type
 		managed!(CopyConstness!(Type, Type2)) opCast(Type2:managed!Type2)() if (is(Type:Type2)) {
-			managed!(CopyConstness!(Type, Type2)) ret;
+			managed!(CopyConstness!(Type, Type2)) ret=void;
 			
 			__managedInternal.copyInto(ret);
 			
@@ -212,11 +212,11 @@ struct managed(Type) {
 			
 			return ret;
 		}
-
+		
 		/// Unsafe-ish dynamic cast, check if is null!
 		managed!(CopyConstness!(Type, Type2)) opCast(Type2:managed!Type2)() if (!is(Type:Type2) && (is(Type2 == interface) || is(Type2 == class))) {
-			managed!(CopyConstness!(Type, Type2)) ret;
-
+			managed!(CopyConstness!(Type, Type2)) ret=void;
+			
 			if (CopyConstness!(Type, Type2) v = cast(CopyConstness!(Type, Type2))__managedGet()) {
 				__managedInternal.copyInto(ret);
 				
@@ -226,13 +226,13 @@ struct managed(Type) {
 					ret.__managedInternal.value = cast(Type2)__managedInternal.value;
 				}
 			}
-
+			
 			return ret;
 		}
 	} else static if (is(Type:TypeIf_Class[], TypeIf_Class) && (is(TypeIf_Class == class) || is(TypeIf_Class==interface))) {
 		/// Casts an array of classes to a more generic class type
 		managed!(CopyConstness!(Type, Type2)[]) opCast(Type2:managed!(Type2[]))() if (is(Type:Type2)) {
-			managed!(CopyConstness!(Type, Type2)[]) ret;
+			managed!(CopyConstness!(Type, Type2)[]) ret=void;
 			
 			__managedInternal.copyInto(ret);
 			
@@ -242,7 +242,7 @@ struct managed(Type) {
 		/// Casts a basic type to a similar (aka same sized) type
 		managed!(CopyConstness!(Type, Type2)) opCast(Type2:managed!Type2)()
 		if ((isBasicType!Type2 || is(Type2 == struct)) && Type2.sizeof == Type.sizeof) {
-			managed!(CopyConstness!(Type, Type2)) ret;
+			managed!(CopyConstness!(Type, Type2)) ret=void;
 			
 			__managedInternal.copyInto(ret);
 			
@@ -252,7 +252,7 @@ struct managed(Type) {
 		/// Casts an array of structs or basic types to a similar (aka same sized) type
 		managed!(CopyConstness!(TypeIf_StructBasic, Type2)[]) opCast(Type2:managed!(Type2[]))()
 		if ((isBasicType!Type2 || is(Type2 == struct)) && Type2.sizeof == TypeIf_StructBasic.sizeof) {
-			managed!(CopyConstness!(TypeIf_StructBasic, Type2)[]) ret;
+			managed!(CopyConstness!(TypeIf_StructBasic, Type2)[]) ret=void;
 			
 			__managedInternal.copyInto(ret);
 			
