@@ -30,6 +30,7 @@
  *		http://www.redblobgames.com/pathfinding/a-star/implementation.html
  */
 module devisualization.util.algorithms.pathfinding;
+deprecated("Killing"):
 public import devisualization.util.algorithms.pathfinding.astar;
 public import devisualization.util.algorithms.pathfinding.breadthfirst;
 public import devisualization.util.algorithms.pathfinding.defs;

@@ -30,6 +30,7 @@
  *		http://www.redblobgames.com/pathfinding/a-star/implementation.html
  */
 module devisualization.util.algorithms.pathfinding.defs;
+deprecated("Killing"):
 
 version(unittest) {
 	struct XY {

@@ -31,6 +31,7 @@
  */
 module devisualization.util.algorithms.pathfinding.dijkstra;
 import devisualization.util.algorithms.pathfinding.defs;
+deprecated("Killing"):
 
 /**
  * Locates the next node in graph to get to a position

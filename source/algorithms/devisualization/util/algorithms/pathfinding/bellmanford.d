@@ -31,6 +31,7 @@
  */
 module devisualization.util.algorithms.pathfinding.bellmanford;
 import devisualization.util.algorithms.pathfinding.defs;
+deprecated("Killing"):
 
 /**
  * Performs a Bellman-Ford search on a graph
