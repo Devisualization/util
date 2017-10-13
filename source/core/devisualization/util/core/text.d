@@ -38,6 +38,7 @@ import std.traits : isSomeString;
  * Returns:
  * 		The text that has been replaced
  */
+deprecated("Too memory expensive, requires a rewrite.")
 T replace(T)(T text, T oldText, T newText, bool caseSensitive = true, bool first = false) pure if (isSomeString!T) {
 	T ret;
 	T tempData;
@@ -83,6 +84,7 @@ unittest {
  * Returns:
  * 		An array of text that has been split
  */
+deprecated("Use std.algorithm.iteration : splitter instead.")
 pure T[] split(T)(T text, T delimater) if (isSomeString!T) {
 	T[] ret;
 	ptrdiff_t i;
@@ -115,7 +117,7 @@ unittest {
  * Returns:
  * 		The multiplied string
  */
-T multiply(T)(T text, size_t count) pure if (isSomeString!T) {
+T multiply(T)(T text, size_t count) pure @safe nothrow if (isSomeString!T) {
 	alias U = typeof(cast()T.init[0]);
 	U[] ret;
 	ret.length = text.length * count;
@@ -126,7 +128,7 @@ T multiply(T)(T text, size_t count) pure if (isSomeString!T) {
 		j += text.length;
 	}
 
-	return cast(T)ret;
+	return ret;
 }
 
 unittest {
@@ -146,6 +148,6 @@ unittest {
  * Returns:
  * 		The indented string
  */
-pure string getSpaceIndent(size_t count) {
+string getSpaceIndent(size_t count) pure @safe nothrow {
 	return "    ".multiply(count);
 }

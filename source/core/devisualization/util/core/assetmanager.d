@@ -27,6 +27,7 @@ module devisualization.util.core.assetmanager;
  * Loads assest based upon, local to program, defaults, application provided, system locatiom and user location.
  * Supports bin2d's generated modules to load from.
  */
+deprecated("An asset manager should be based upon a VFS.")
 struct AssetManager(T) {
     private __gshared {
         T[string] local;

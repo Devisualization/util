@@ -28,7 +28,6 @@ import core.time : Duration;
 /**
  * UTC+0 time
  */
-
 @property {
 	/**
 	 * Gets the current time without any offsets.

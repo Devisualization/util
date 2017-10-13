@@ -24,7 +24,7 @@
 module devisualization.util.core.math;
 
 private {
-	const real[] factorialLookupTable = [
+	static const(ulong[]) factorialLookupTable = [
 		1,
 		1,
 		2,
@@ -58,7 +58,7 @@ private {
  * Returns:
  * 		A cached value of factorial between 0 and 32 recursion.
  */
-double factorial(size_t n)
+double factorial(size_t n) @safe nothrow
 in {
 	assert(n >= 0);
 	assert(n < factorialLookupTable.length);
