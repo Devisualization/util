@@ -27,6 +27,7 @@ import devisualization.util.opengl.shaders;
 import glINCOMPLETE = derelict.opengl3.gl3;
 import devisualization.util.opengl.function_wrappers;
 public import devisualization.util.opengl.function_wrappers : BindBufferTargets;
+deprecated("de_util:opengl is going to die"):
 
 class VertexArray {
     private {

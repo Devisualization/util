@@ -26,6 +26,7 @@ import devisualization.util.opengl.function_wrappers;
 import devisualization.util.opengl.texture;
 import devisualization.util.opengl.renderbuffer;
 import glINCOMPLETE = derelict.opengl3.gl3;
+deprecated("de_util:opengl is going to die"):
 
 class FrameBuffer {
 	private {

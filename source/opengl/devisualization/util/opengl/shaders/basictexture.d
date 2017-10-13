@@ -26,6 +26,7 @@ import devisualization.util.opengl.shaders.defs;
 import devisualization.util.opengl.vertexarray;
 import devisualization.util.opengl.buffers;
 import gl3n.linalg : vec4, mat4;
+deprecated("de_util:opengl is going to die"):
 
 /**
  * Renders vertices with a texture

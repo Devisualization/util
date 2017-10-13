@@ -24,6 +24,7 @@
 module devisualization.util.opengl.shaders.defs;
 import devisualization.util.opengl.function_wrappers;
 import gl3n.linalg;
+deprecated("de_util:opengl is going to die"):
 
 class ShaderProgram {
 	private {

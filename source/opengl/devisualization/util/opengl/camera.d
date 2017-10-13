@@ -23,6 +23,7 @@
  */
 module devisualization.util.opengl.camera;
 import gl3n.linalg : mat3, vec3;
+deprecated("de_util:opengl is going to die"):
 
 /**
  * Provides a basic camera.

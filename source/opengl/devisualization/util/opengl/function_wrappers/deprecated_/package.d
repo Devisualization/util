@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 module devisualization.util.opengl.function_wrappers.deprecated_;
+deprecated("de_util:opengl is going to die"):
 public import devisualization.util.opengl.function_wrappers.deprecated_.v10v11;
 public import devisualization.util.opengl.function_wrappers.deprecated_.v12;
 public import devisualization.util.opengl.function_wrappers.deprecated_.v13;

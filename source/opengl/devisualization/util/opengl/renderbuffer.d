@@ -25,6 +25,7 @@ module devisualization.util.opengl.renderbuffer;
 import devisualization.util.opengl.function_wrappers;
 import devisualization.util.opengl.texture;
 import glINCOMPLETE = derelict.opengl3.gl3;
+deprecated("de_util:opengl is going to die"):
 
 struct RenderBuffer {
 	private {

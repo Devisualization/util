@@ -27,6 +27,7 @@ import devisualization.util.opengl.vertexarray;
 import devisualization.util.opengl.buffers;
 import devisualization.image.color;
 import gl3n.linalg : vec4, mat4;
+deprecated("de_util:opengl is going to die"):
 
 /**
  * Renders vertices as a solid colour

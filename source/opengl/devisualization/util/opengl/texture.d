@@ -27,6 +27,7 @@ import devisualization.image;
 import devisualization.image.color;
 public import devisualization.util.opengl.function_wrappers : InternalFormat, BindTextureTarget, PixelFormat;
 import glINCOMPLETE = derelict.opengl3.gl3;
+deprecated("de_util:opengl is going to die"):
 
 struct TextureImage {
     private {
