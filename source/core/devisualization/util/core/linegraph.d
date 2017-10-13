@@ -31,6 +31,7 @@ module devisualization.util.core.linegraph;
  * 
  * Could be rather useful for Devisualization.Image filters perhaps?
  */
+deprecated("Use PointsGenerator instead.")
 struct LineGraphType(bool checkNegative, TYPE) {
     private {
         enum GraphFunction {
@@ -419,4 +420,525 @@ private {
         TYPE p2y = cast(TYPE)(y1 + fb * (y2 - y0));  
         return [p1x, p1y, p2x, p2y];
     }
+}
+
+/**
+ * A line graph.
+ * Given points produces all points upon the line.
+ * 
+ * Uses the GC.
+ */
+struct PointsGenerator(Point) if (__traits(compiles, {
+			Point p;
+			double
+				x = p.x,
+				y = p.y,
+				z = p.z;
+			p.x = x;
+			p.y = y;
+			p.z = z;
+	})) {
+
+	private {
+		Segment!Point[] segments;
+		Point startAt;
+	}
+	
+	this(Point startAt) {
+		import std.math : isNaN;
+		
+		if (startAt.x.isNaN)
+			startAt.x = 0;
+		if (startAt.y.isNaN)
+			startAt.y = 0;
+		if (startAt.z.isNaN)
+			startAt.z = 0;
+		
+		this.startAt = startAt;
+	}
+	
+	void pointAt(Point location) {
+		import std.math : isNaN;
+		
+		if (location.x.isNaN)
+			location.x = 0;
+		if (location.y.isNaN)
+			location.y = 0;
+		if (location.z.isNaN)
+			location.z = 0;
+		
+		segments ~= Segment!Point(Segment!Point.Type.Point, location);
+	}
+	
+	void lineTo(Point location) {
+		import std.math : isNaN;
+		
+		if (location.x.isNaN)
+			location.x = 0;
+		if (location.y.isNaN)
+			location.y = 0;
+		if (location.z.isNaN)
+			location.z = 0;
+		
+		segments ~= Segment!Point(Segment!Point.Type.LineTo, location);
+	}
+	
+	void bezierOf(Point location, Point[] control...) {
+		if (control.length == 0) {
+			// basically is a straight line,
+			// but bezier curve evaluation is slow compared to lineTo.
+			lineTo(location);
+			// hence we switch to it instead.
+		} else {
+			segments ~= Segment!Point(Segment!Point.Type.Bezier, location);
+			segments[$-1].bezier_points = control.dup;
+		}
+	}
+	
+	void arcOf(Point location, Point arc_radius) {
+		segments ~= Segment!Point(Segment!Point.Type.Arc, location);
+		segments[$-1].arc_radius = arc_radius;
+	}
+	
+	auto generate(double interval) {
+		struct Result {
+			Segment!Point[] segments;
+			immutable(double) interval;
+			Point next, current;
+			
+			this(Segment!Point[] segments, double interval, Point startAt) {
+				this.segments = segments;
+				this.interval = interval;
+				next = startAt;
+				
+				if (segments.length > 0)
+					segments[0].initialize(interval, next);
+				next = startAt;
+			}
+			
+			@property {
+				pragma(inline, true)
+				Point front() {
+					return next;
+				}
+				
+				pragma(inline, true)
+				bool empty() {
+					return segments.length == 0 || next == Point.init;
+				}
+			}
+			
+			void popFront() {
+				import std.math : isNaN;
+				current = next;
+				next = Point.init;
+				
+				while(segments.length > 0) {
+					Point ret = segments[0].nextCoord(interval, current);
+					
+					if (ret.x.isNaN || ret.y.isNaN || ret.z.isNaN) {
+						segments = segments[1 .. $];
+						if (segments.length > 0)
+							segments[0].initialize(interval, current);
+					} else {
+						next = ret;
+						break;
+					}
+				}
+			}
+		}
+		
+		return Result(segments.dup, interval, startAt);
+	}
+}
+
+private {
+	struct Segment(Point) {
+		Type type;
+		Point location, arc_radius;
+		Point[] bezier_points;
+		
+		void initialize(double interval, ref Point previous) {
+			import std.math : abs, copysign, pow, PI, PI_2, sqrt;
+			
+			switch(type) {
+				case Type.LineTo:
+					dx = location.x - previous.x;
+					dy = location.y - previous.y;
+					dz = location.z - previous.z;
+					
+					Point point_abs = Point(abs(dx), abs(dy), abs(dz));
+					double point_sum_third = (point_abs.x + point_abs.y + point_abs.z) * (1/3f);
+					Point point_portion = Point(
+						point_abs.x / point_sum_third,
+						point_abs.y / point_sum_third,
+						point_abs.z / point_sum_third);
+					
+					lineTo_delta = Point(
+						copysign(point_portion.x, dx) * interval,
+						copysign(point_portion.y, dy) * interval,
+						copysign(point_portion.z, dz) * interval);
+					break;
+					
+				case Type.Arc:
+					// This code is surprisingly like lineTo.
+					
+					// Required to calculate starting angles (to the quartent) of the curve.
+					//  in lineTo it only needs 'effective' difference, where as here we
+					//  need full correct difference with understanding of negatives.
+					dx = calculateDifferenceOnAxis(location.x, previous.x);
+					dy = calculateDifferenceOnAxis(location.y, previous.y);
+					dz = calculateDifferenceOnAxis(location.z, previous.z);
+					
+					arc_center = Point(
+						(location.x + previous.x)/2,
+						(location.y + previous.y)/2,
+						(location.z + previous.z)/2);
+					arc_radius = Point(
+						abs(arc_center.x-location.x),
+						abs(arc_center.y-location.y),
+						abs(arc_center.z-location.z));
+					
+					double train_error1, train_error2,
+						current_angle1, current_angle2;
+					
+					// x
+					
+					if (dx > 0) {
+						current_angle1 = PI;
+						current_angle2 = PI+PI_2;
+					} else {
+						current_angle1 = 0;
+						current_angle2 = PI_2;
+					}
+					
+					train_error1 = 0;
+					train_error2 = 0;
+					
+					while(train_NN(current_angle1, train_error1, 0.1, arc_radius.x, arc_center.x, previous.x)) {}
+					while(train_NN(current_angle2, train_error2, 0.1, arc_radius.x, arc_center.x, location.x)) {}
+					
+					if (current_angle1 > current_angle2 && dx > 0) {
+						arc_angle.x = (2*PI) - current_angle1;
+						arc_maxangle.x = (2*PI) - current_angle2;
+					} else {
+						arc_angle.x = current_angle1;
+						arc_maxangle.x = current_angle2;
+					}
+					
+					// x
+					// y
+					
+					if (dy > 0) {
+						current_angle1 = PI;
+						current_angle2 = PI+PI_2;
+					} else {
+						current_angle1 = 0;
+						current_angle2 = PI_2;
+					}
+					
+					train_error1 = 0;
+					train_error2 = 0;
+					
+					while(train_NN(current_angle1, train_error1, 0.1, arc_radius.y, arc_center.y, previous.y)) {}
+					while(train_NN(current_angle2, train_error2, 0.1, arc_radius.y, arc_center.y, location.y)) {}
+					
+					if (current_angle1 > current_angle2 && dy > 0) {
+						arc_angle.y = (2*PI) - current_angle1;
+						arc_maxangle.y = (2*PI) - current_angle2;
+					} else {
+						arc_angle.y = current_angle1;
+						arc_maxangle.y = current_angle2;
+					}
+					
+					// y
+					// z
+					
+					if (dz > 0) {
+						current_angle1 = PI;
+						current_angle2 = PI+PI_2;
+					} else {
+						current_angle1 = 0;
+						current_angle2 = PI_2;
+					}
+					
+					train_error1 = 0;
+					train_error2 = 0;
+					
+					while(train_NN(current_angle1, train_error1, 0.1, arc_radius.z, arc_center.z, previous.z)) {}
+					while(train_NN(current_angle2, train_error2, 0.1, arc_radius.z, arc_center.z, location.z)) {}
+					
+					if (current_angle1 > current_angle2 && dz > 0) {
+						arc_angle.z = (2*PI) - current_angle1;
+						arc_maxangle.z = (2*PI) - current_angle2;
+					} else {
+						arc_angle.z = current_angle1;
+						arc_maxangle.z = current_angle2;
+					}
+					
+					// z
+					
+					double angle_sum_third = (abs(dx)+abs(dy)+abs(dz))*(1/3f);
+					Point angle_diff = Point(
+						arc_maxangle.x-arc_angle.x,
+						arc_maxangle.y-arc_angle.y,
+						arc_maxangle.z-arc_angle.z);
+					arc_delta = Point(
+						copysign(angle_diff.x / angle_sum_third, angle_diff.x) * interval,
+						copysign(angle_diff.y / angle_sum_third, angle_diff.y) * interval,
+						copysign(angle_diff.z / angle_sum_third, angle_diff.z) * interval);
+					
+					arc_angle.x += arc_delta.x;
+					arc_angle.y += arc_delta.y;
+					arc_angle.z += arc_delta.z;
+					break;
+					
+				case Type.Bezier:
+					bezier_buffer.length = bezier_points.length+2;
+					origin_point = previous;
+					
+					// Our goal for getting the number of ticks to operate for
+					//  is to determine essentially the length of the line.
+					// Unfortunately this goal is impossible to do.
+					// So we do things a bit more evilly.
+					
+					// And truth is, I don't care too much about it.
+					// What I care about is figuring out a tick count that will work for all of the arc's.
+					
+					// Each bezier curve exists in a 0f..1f space.
+					// But we have three axis to work upon, not two.
+					// What we want to archive is to get the difference between each control point,
+					//  is to be roughly the length of interval.
+					// Because of this, we treat each arc seperately,
+					//  the distance we want, is (bestDistance/arcs.length) == interval
+					//  we know that it won't be possible to get this to occur,
+					//  but we want to get as close to it as we can.
+					
+					double
+						bestDistance = double.max_exp,
+						bestTickCount = 1,
+						expectedDistance = interval*(bezier_points.length+1),
+						tickCount=1;
+					
+					foreach(i; 0 .. 60) {
+						// 0..4 = 1
+						// 4..8 = 0.1
+						// 8..12 = 0.01
+						double
+							learnRate =
+								i < 20 ? interval :
+								i < 40 ? interval / 10 :
+								interval / 100;
+						Point sum = Point(0, 0, 0);
+						
+						foreach(j; 0 .. 2) {
+							double tickIndevidual = 1f/tickCount;
+							double tick = j == 0 ? tickIndevidual : (2f/tickCount);
+							Point startPoint = previous;
+							
+							foreach(p; bezier_points) {
+								sum.x += bezier_combine(startPoint.x, p.x, tick+tickIndevidual)-bezier_combine(startPoint.x, p.x, tick);
+								sum.y += bezier_combine(startPoint.y, p.y, tick+tickIndevidual)-bezier_combine(startPoint.y, p.y, tick);
+								sum.z += bezier_combine(startPoint.z, p.z, tick+tickIndevidual)-bezier_combine(startPoint.z, p.z, tick);
+								
+								startPoint = p;
+							}
+							
+							sum.x += bezier_combine(startPoint.x, location.x, tick+tickIndevidual)-bezier_combine(startPoint.x, location.x, tick);
+							sum.y += bezier_combine(startPoint.y, location.y, tick+tickIndevidual)-bezier_combine(startPoint.y, location.y, tick);
+							sum.z += bezier_combine(startPoint.z, location.z, tick+tickIndevidual)-bezier_combine(startPoint.z, location.z, tick);
+						}
+						
+						double sumV = (sum.x+sum.y+sum.z)/6;
+						if (bestDistance - expectedDistance > sumV-expectedDistance) {
+							bestDistance = sumV;
+							bestTickCount = tickCount;
+						} else {
+							tickCount += tickCount * learnRate * (sumV / expectedDistance);
+						}
+					}
+					
+					bezier_tick = 1f/(bestTickCount/2);
+					bezier_bezierOffset = bezier_tick;
+					break;
+					
+				default:
+					break;
+			}
+		}
+		
+		double dx, dy, dz;
+		Point origin_point;
+		union {
+			struct {
+				double[] bezier_buffer;
+				double bezier_tick,
+					bezier_bezierOffset;
+			}
+			
+			struct {
+				Point arc_delta,
+					arc_center,
+					arc_maxangle,
+					arc_angle;
+			}
+			Point lineTo_delta;
+		}
+		
+		Point nextCoord(double interval, ref Point previous) {
+			switch(type) {
+				case Type.Point:
+					scope(exit) location = Point.init;
+					return location;
+					
+				case Type.LineTo:
+					if ((dx > 0 && previous.x >= location.x) || (dx < 0 && previous.x <= location.x) ||
+						(dy > 0 && previous.y >= location.y) || (dy < 0 && previous.y <= location.y) ||
+						(dz > 0 && previous.z >= location.z) || (dz < 0 && previous.z <= location.z))
+						return Point.init;
+					else {
+						Point ret = Point(
+							previous.x + lineTo_delta.x,
+							previous.y + lineTo_delta.y,
+							previous.z + lineTo_delta.z);
+						
+						if ((dx > 0 && ret.x >= location.x) || (dx < 0 && ret.x <= location.x))
+							ret.x = location.x;
+						if ((dy > 0 && ret.y >= location.y) || (dy < 0 && ret.y <= location.y))
+							ret.y = location.y;
+						if ((dz > 0 && ret.z >= location.z) || (dz < 0 && ret.z <= location.z))
+							ret.z = location.z;
+						
+						return ret;
+					}
+					
+				case Type.Arc:
+					import std.math : cos, sin;
+					
+					if (arc_angle.x >= arc_maxangle.x ||
+						arc_angle.y >= arc_maxangle.y ||
+						arc_angle.z >= arc_maxangle.z	)
+						return Point.init;
+					
+					Point ret = Point(
+						(arc_radius.x * cos(arc_angle.x)) + arc_center.x,
+						(arc_radius.y * cos(arc_angle.y)) + arc_center.y,
+						(arc_radius.z * cos(arc_angle.z)) + arc_center.z);
+					
+					arc_angle.x += arc_delta.x;
+					arc_angle.y += arc_delta.y;
+					arc_angle.z += arc_delta.z;
+					
+					if (arc_angle.x >= arc_maxangle.x)
+						ret.x = location.x;
+					if (arc_angle.y >= arc_maxangle.y)
+						ret.y = location.y;
+					if (arc_angle.z >= arc_maxangle.z)
+						ret.z = location.z;
+					
+					return ret;
+					
+				case Type.Bezier:
+					import std.math : ceil;
+					
+					if (bezier_bezierOffset >= 1f)
+						return Point.init;
+					
+					Point ret;
+					
+					//
+					
+					bezier_buffer[0] = origin_point.x;
+					bezier_buffer[$-1] = location.x;
+					foreach(i, p; bezier_points)
+						bezier_buffer[1+i] = p.x;
+					
+					bezier_handle(bezier_buffer.length, bezier_buffer, bezier_bezierOffset);
+					ret.x = bezier_buffer[0];
+					
+					//
+					
+					bezier_buffer[0] = origin_point.y;
+					bezier_buffer[$-1] = location.y;
+					foreach(i, p; bezier_points)
+						bezier_buffer[1+i] = p.y;
+					
+					bezier_handle(bezier_buffer.length, bezier_buffer, bezier_bezierOffset);
+					ret.y = bezier_buffer[0];
+					
+					//
+					
+					bezier_buffer[0] = origin_point.z;
+					bezier_buffer[$-1] = location.z;
+					foreach(i, p; bezier_points)
+						bezier_buffer[1+i] = p.z;
+					
+					bezier_handle(bezier_buffer.length, bezier_buffer, bezier_bezierOffset);
+					ret.z = bezier_buffer[0];
+					
+					///
+					
+					bezier_bezierOffset += bezier_tick;
+					
+					if (bezier_bezierOffset >= 1f) {
+						ret.x = location.x;
+						ret.y = location.y;
+						ret.z = location.z;
+					}
+					return ret;
+					
+				default:
+					return Point.init;
+			}
+		}
+		
+		enum Type {
+			Error,
+			Point,
+			LineTo,
+			Bezier,
+			Arc
+		}
+	}
+	
+	double bezier_combine(double a, double b, double t) {
+		return (a*(1-t)) + (b*t);
+	}
+	
+	void bezier_handle(size_t recurseIndex, double[] bezier_buffer, double bezier_bezierOffset) {
+		while(recurseIndex > 1) {
+			uint newIndex;
+			foreach(actualIndex; 1 .. recurseIndex) {
+				double
+					a = bezier_buffer[actualIndex-1],
+					b = bezier_buffer[actualIndex];
+				bezier_buffer[newIndex] = bezier_combine(a, b, bezier_bezierOffset);
+				newIndex++;
+			}
+			
+			recurseIndex = newIndex;
+		}
+	}
+	
+	bool train_NN(ref double cangle, ref double error, double train_rate, double radius, double center, double v) {
+		import std.math : cos, PI, abs;
+		
+		error = (radius*cos(cangle)+center)-v;
+		cangle += error*train_rate;
+		return abs(error) > train_rate;
+	}
+	
+	double calculateDifferenceOnAxis(double a, double b) {
+		import std.math : abs, copysign;
+		
+		if (a >= 0 && b >= 0) {
+		} else if (a <= 0 && b <= 0) {
+		} else if (a > b) {
+			return abs(b)+a;
+		} else {
+			return -(abs(a)+b);
+		}
+		
+		return a-b;
+	}
 }
