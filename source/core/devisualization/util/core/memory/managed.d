@@ -305,7 +305,7 @@ struct managed(Type) {
 				} else static if (isDynamicArray!Type) {
 					__managedInternal.allocator.dispose(cast(Unqual!(ForeachType!Type)[])__managedInternal.value);
 				} else static if (is(Type == class) || is(Type == interface)) {
-					__managedInternal.allocator.dispose(__managedInternal.value);
+					__managedInternal.allocator.dispose(cast(Unqual!Type)__managedInternal.value);
 				}
 			}
 			__managedInternal.allocator.dispose(__managedInternal.managers);
