@@ -11,21 +11,26 @@
         {
             "name": "core",
             "sourcePaths": ["source/core"],
-            "importPaths": ["source/core"]
+            "importPaths": ["source/core"],
+            "dependencies": {
+                "stdx-allocator": "~>2.77.0"
+            }
         },
-		{
-			"name": "algorithms",
-			"sourcePaths": ["source/algorithms"],
-			"importPaths": ["source/algorithms"],
-			"dependencies": {
+        {
+            "name": "algorithms",
+            "sourcePaths": ["source/algorithms"],
+            "importPaths": ["source/algorithms"],
+            "dependencies": {
+                "stdx-allocator": "~>2.77.0",
                 "gl3n": ">=1.0.1"
-			}
-		},
+            }
+        },
         {
             "name": "opengl",
             "sourcePaths": ["source/opengl"],
             "importPaths": ["source/opengl"],
             "dependencies": {
+                "stdx-allocator": "~>2.77.0",
                 "derelict-gl3": ">=1.0.10",
                 "de_image:interfaces": ">=0.3.4",
                 "gl3n": ">=1.0.1"
@@ -36,6 +41,7 @@
             "sourcePaths": ["source/photoshop_aco"],
             "importPaths": ["source/photoshop_aco"],
             "dependencies": {
+                "stdx-allocator": "~>2.77.0",
                  "de_image:interfaces": ">=0.2.2"
             }
         }

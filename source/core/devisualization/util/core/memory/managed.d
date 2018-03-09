@@ -12,7 +12,7 @@
  *              http://www.boost.org/LICENSE_1_0.txt)
  */
 module devisualization.util.core.memory.managed;
-import std.experimental.allocator : ISharedAllocator, IAllocator, make, dispose, processAllocator, theAllocator;
+import stdx.allocator : ISharedAllocator, IAllocator, make, dispose, processAllocator, theAllocator;
 import std.typecons : Tuple;
 import std.traits : CopyConstness, isBasicType, isPointer, ForeachType, isArray, isDynamicArray, Unqual;
 
